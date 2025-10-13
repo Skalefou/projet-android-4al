@@ -1,0 +1,7 @@
+Object en kotlin crée une classe singleton, il n'y a qu'une seule instance pour toute l'application.
+MutableStateFlow est l'équivalent de useState en React, crée une variable observable contenant une valeur modifiable
+StateFlow est la même chose que MutableStateFlow sauf qu'on ne peut pas modifier la valeur
+
+Soit
+val isLoggedIn by AuthState.isLoggedIn.collectAsState()
+le by déléguera la responsabilité de isLoggedIn à l'état de 'isLoggedIn' de AuthState
