@@ -3,6 +3,7 @@ package com.groupe1.app_android.ui.loginRegister
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,9 +13,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.groupe1.app_android.utils.Constants
 
 @Composable
+@Preview()
 fun LoginRegisterGateScreen(
     onClickLogin: () -> Unit,
     onClickRegister: () -> Unit
@@ -22,13 +27,26 @@ fun LoginRegisterGateScreen(
     Box(Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
-                .align(Alignment.Center)
+                .fillMaxWidth()
+                .fillMaxHeight(0.35f)
+                .align(Alignment.TopCenter),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                Constants.APP_NAME,
+                fontSize = 64.sp
+            )
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.25f)
+                .align(Alignment.BottomCenter)
                 .padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Bienvenue")
-            Text("Pour continuer, créez un compte ou connectez-vous.")
 
             Button(
                 onClick = onClickRegister,
