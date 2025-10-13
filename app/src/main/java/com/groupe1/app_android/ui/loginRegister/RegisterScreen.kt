@@ -26,6 +26,9 @@ fun RegisterScreen() {
     var emailError by remember { mutableStateOf(false) }
     var passwordError by remember { mutableStateOf(false) }
     var confirmPasswordError by remember { mutableStateOf(false) }
+    var passwordMismatchError by remember { mutableStateOf(false) }
+    var validEmailError by remember { mutableStateOf(false) }
+    var validPasswordError by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -68,6 +71,9 @@ fun RegisterScreen() {
         if (emailError) {
             Text("L'email est requis", color = Color.Red, fontSize = 12.sp)
         }
+        if (validEmailError) {
+            Text("L'email n'est pas valide", color = Color.Red, fontSize = 12.sp)
+        }
 
         OutlinedTextField(
             value = password,
@@ -79,6 +85,9 @@ fun RegisterScreen() {
         )
         if (passwordError) {
             Text("Le mot de passe est requis", color = Color.Red, fontSize = 12.sp)
+        }
+        if (validPasswordError) {
+            Text("Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre", color = Color.Red, fontSize = 12.sp)
         }
 
         OutlinedTextField(
@@ -92,6 +101,9 @@ fun RegisterScreen() {
         if (confirmPasswordError) {
             Text("La confirmation est requise", color = Color.Red, fontSize = 12.sp)
         }
+        if (passwordMismatchError) {
+            Text("Les mots de passe ne correspondent pas", color = Color.Red, fontSize = 12.sp)
+        }
 
         Button(
             onClick = {
@@ -100,6 +112,9 @@ fun RegisterScreen() {
                 emailError = email.isBlank()
                 passwordError = password.isBlank()
                 confirmPasswordError = confirmPassword.isBlank()
+                passwordMismatchError = password != confirmPassword
+                validEmailError = !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotBlank()
+                validPasswordError = !Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$").matches(password)  && password.isNotBlank()
             },
             modifier = Modifier.fillMaxWidth()
         ) {
