@@ -1,9 +1,12 @@
 package com.groupe1.app_android.ui.loginRegister
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -12,7 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
+import com.groupe1.app_android.ui.theme.HoneyYellow
 
 
 @Composable
@@ -32,6 +35,12 @@ fun RegisterScreen() {
     var validEmailError by remember { mutableStateOf(false) }
     var validPasswordError by remember { mutableStateOf(false) }
 
+    val colorOutlinedTextField = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = HoneyYellow,
+        unfocusedBorderColor = HoneyYellow,
+        errorBorderColor = Color.Red
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -46,7 +55,8 @@ fun RegisterScreen() {
             onValueChange = { firstName = it; firstNameError = false },
             label = { Text("Prénom") },
             isError = firstNameError,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+            colors = colorOutlinedTextField
         )
         if (firstNameError) {
             Text("Le prénom est requis", color = Color.Red, fontSize = 12.sp)
@@ -57,7 +67,8 @@ fun RegisterScreen() {
             onValueChange = { lastName = it; lastNameError = false },
             label = { Text("Nom") },
             isError = lastNameError,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+            colors = colorOutlinedTextField
         )
         if (lastNameError) {
             Text("Le nom est requis", color = Color.Red, fontSize = 12.sp)
@@ -68,7 +79,8 @@ fun RegisterScreen() {
             onValueChange = { email = it; emailError = false },
             label = { Text("Email") },
             isError = emailError,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+            colors = colorOutlinedTextField
         )
         if (emailError) {
             Text("L'email est requis", color = Color.Red, fontSize = 12.sp)
@@ -83,7 +95,8 @@ fun RegisterScreen() {
             label = { Text("Mot de passe") },
             visualTransformation = PasswordVisualTransformation(),
             isError = passwordError,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+            colors = colorOutlinedTextField
         )
         if (passwordError) {
             Text("Le mot de passe est requis", color = Color.Red, fontSize = 12.sp)
@@ -98,7 +111,8 @@ fun RegisterScreen() {
             label = { Text("Confirmation du mot de passe") },
             visualTransformation = PasswordVisualTransformation(),
             isError = confirmPasswordError,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+            colors = colorOutlinedTextField
         )
         if (confirmPasswordError) {
             Text("La confirmation est requise", color = Color.Red, fontSize = 12.sp)
