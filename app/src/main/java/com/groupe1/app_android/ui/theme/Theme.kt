@@ -1,6 +1,5 @@
 package com.groupe1.app_android.ui.theme
 
-import android.app.Activity
 import androidx.compose.ui.graphics.Color
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -13,13 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Color.Black,
+    primary = HoneyYellow,
     secondary = PurpleGrey80,
     tertiary = Pink80
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color.Black,
+    primary = HoneyYellow,
     secondary = PurpleGrey40,
     tertiary = Pink40,
     background = Color.White

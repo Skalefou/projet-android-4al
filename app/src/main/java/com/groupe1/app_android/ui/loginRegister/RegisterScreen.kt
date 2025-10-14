@@ -13,6 +13,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+
+
 @Composable
 fun RegisterScreen() {
     var firstName by remember { mutableStateOf("") }
@@ -114,7 +116,7 @@ fun RegisterScreen() {
                 confirmPasswordError = confirmPassword.isBlank()
                 passwordMismatchError = password != confirmPassword
                 validEmailError = !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotBlank()
-                validPasswordError = !Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$").matches(password)  && password.isNotBlank()
+                validPasswordError = !Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$").matches(password)  && password.isNotBlank()
             },
             modifier = Modifier.fillMaxWidth()
         ) {
