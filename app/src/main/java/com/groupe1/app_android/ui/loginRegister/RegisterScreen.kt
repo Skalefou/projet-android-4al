@@ -56,7 +56,8 @@ fun RegisterScreen() {
             label = { Text("Prénom") },
             isError = firstNameError,
             modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            colors = colorOutlinedTextField
+            colors = colorOutlinedTextField,
+            singleLine = true
         )
         if (firstNameError) {
             Text("Le prénom est requis", color = Color.Red, fontSize = 12.sp)
@@ -68,7 +69,8 @@ fun RegisterScreen() {
             label = { Text("Nom") },
             isError = lastNameError,
             modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            colors = colorOutlinedTextField
+            colors = colorOutlinedTextField,
+            singleLine = true
         )
         if (lastNameError) {
             Text("Le nom est requis", color = Color.Red, fontSize = 12.sp)
@@ -80,7 +82,8 @@ fun RegisterScreen() {
             label = { Text("Email") },
             isError = emailError,
             modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            colors = colorOutlinedTextField
+            colors = colorOutlinedTextField,
+            singleLine = true
         )
         if (emailError) {
             Text("L'email est requis", color = Color.Red, fontSize = 12.sp)
@@ -96,7 +99,8 @@ fun RegisterScreen() {
             visualTransformation = PasswordVisualTransformation(),
             isError = passwordError,
             modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            colors = colorOutlinedTextField
+            colors = colorOutlinedTextField,
+            singleLine = true
         )
         if (passwordError) {
             Text("Le mot de passe est requis", color = Color.Red, fontSize = 12.sp)
@@ -112,7 +116,8 @@ fun RegisterScreen() {
             visualTransformation = PasswordVisualTransformation(),
             isError = confirmPasswordError,
             modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-            colors = colorOutlinedTextField
+            colors = colorOutlinedTextField,
+            singleLine = true
         )
         if (confirmPasswordError) {
             Text("La confirmation est requise", color = Color.Red, fontSize = 12.sp)
