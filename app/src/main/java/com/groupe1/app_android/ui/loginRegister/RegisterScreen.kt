@@ -1,11 +1,9 @@
 package com.groupe1.app_android.ui.loginRegister
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,6 +13,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.groupe1.app_android.dtos.RegisterUserDTO
+import com.groupe1.app_android.services.UserService
 import com.groupe1.app_android.ui.theme.HoneyYellow
 
 
@@ -40,6 +40,18 @@ fun RegisterScreen() {
         unfocusedBorderColor = HoneyYellow,
         errorBorderColor = Color.Red
     )
+
+    fun registerPost() {
+        val registerUser = RegisterUserDTO(
+            firstName = firstName,
+            lastName = lastName,
+            email = email,
+            password = password
+        )
+
+        val user = UserService.registerUser(registerUser)
+
+    }
 
     Column(
         modifier = Modifier
@@ -136,6 +148,10 @@ fun RegisterScreen() {
                 passwordMismatchError = password != confirmPassword
                 validEmailError = !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotBlank()
                 validPasswordError = !Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$").matches(password)  && password.isNotBlank()
+
+                if (!firstNameError && !lastNameError && !emailError && !passwordError && !confirmPasswordError && !passwordMismatchError && !validEmailError && !validPasswordError) {
+                    registerPost()
+                }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
