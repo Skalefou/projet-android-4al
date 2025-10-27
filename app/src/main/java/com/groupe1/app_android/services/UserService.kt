@@ -19,7 +19,7 @@ object UserService {
             throw IllegalArgumentException("L'email n'est pas valide.")
         }
         if (!Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$").matches(registerUser.password)  && registerUser.password.isNotBlank()) {
-            throw IllegalArgumentException("Le mot de passe doit contenir au moins 8 caractères.")
+            throw IllegalArgumentException("Le mot de passe doit faire au moins 8 caractères avec minuscule, majuscule et chiffre.")
         }
 
         return UserRepository.registerUserPost(registerUser)
