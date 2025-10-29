@@ -15,12 +15,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.groupe1.app_android.dtos.RegisterUserDTO
 import com.groupe1.app_android.services.UserService
+import com.groupe1.app_android.session.UserStore
 import com.groupe1.app_android.ui.theme.HoneyYellow
 import kotlinx.coroutines.launch
 
 
 @Composable
-fun RegisterScreen() {
+fun RegisterScreen(
+    onClickGoToHome: () -> Unit
+) {
     val scope = rememberCoroutineScope()
 
     var firstName by remember { mutableStateOf("") }
@@ -51,9 +54,8 @@ fun RegisterScreen() {
             email = email,
             password = password
         )
-
         val user = UserService.registerUser(registerUser)
-
+        UserStore.login(user)
     }
 
     Column(
@@ -156,6 +158,7 @@ fun RegisterScreen() {
                     scope.launch {            // 👈 On lance la suspend ici
                         registerPost()
                     }
+                    onClickGoToHome()
                 }
             },
             modifier = Modifier.fillMaxWidth()

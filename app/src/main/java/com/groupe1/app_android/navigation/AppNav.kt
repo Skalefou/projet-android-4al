@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.groupe1.app_android.auth.AuthState
+import com.groupe1.app_android.ui.main.HomeScreen
 import com.groupe1.app_android.ui.loginRegister.LoginRegisterGateScreen
 import com.groupe1.app_android.ui.loginRegister.LoginScreen
 import com.groupe1.app_android.ui.loginRegister.RegisterScreen
@@ -22,7 +23,6 @@ object Routes {
 fun AppNav(nav: NavHostController) {
     val isLoggedIn by AuthState.isLoggedIn.collectAsState()
 
-
     NavHost(
         navController = nav,
         startDestination = if (isLoggedIn) Routes.home else Routes.gate
@@ -34,10 +34,12 @@ fun AppNav(nav: NavHostController) {
             )
         }
         composable(Routes.login) { LoginScreen() }
-        composable(Routes.register) { RegisterScreen() }
+        composable(Routes.register) { RegisterScreen(
+            onClickGoToHome={ nav.navigate(Routes.home) }
+        ) }
 
         composable(Routes.home) {
-            // TODO: écran d’accueil une fois connecté
+            HomeScreen()
         }
     }
 }
