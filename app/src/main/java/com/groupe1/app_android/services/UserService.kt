@@ -2,10 +2,12 @@ package com.groupe1.app_android.services
 
 import com.groupe1.app_android.dtos.RegisterUserDTO
 import com.groupe1.app_android.models.User
-import com.groupe1.app_android.repository.UserRepository
+import com.groupe1.app_android.networks.NetworkModule
 
 object UserService {
-    fun registerUser(registerUser: RegisterUserDTO): User {
+    private val userApi = NetworkModule.userApi
+
+    suspend fun registerUser(registerUser: RegisterUserDTO): User {
         if (registerUser.firstName.isBlank()) {
             throw IllegalArgumentException("Le prénom ne peut pas être vide.")
         }
@@ -22,6 +24,6 @@ object UserService {
             throw IllegalArgumentException("Le mot de passe doit faire au moins 8 caractères avec minuscule, majuscule et chiffre.")
         }
 
-        return UserRepository.registerUserPost(registerUser)
+        return userApi.register(registerUser)
     }
 }

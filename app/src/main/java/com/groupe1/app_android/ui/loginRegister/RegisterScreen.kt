@@ -16,10 +16,13 @@ import androidx.compose.ui.unit.sp
 import com.groupe1.app_android.dtos.RegisterUserDTO
 import com.groupe1.app_android.services.UserService
 import com.groupe1.app_android.ui.theme.HoneyYellow
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun RegisterScreen() {
+    val scope = rememberCoroutineScope()
+
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -41,7 +44,7 @@ fun RegisterScreen() {
         errorBorderColor = Color.Red
     )
 
-    fun registerPost() {
+    suspend fun registerPost() {
         val registerUser = RegisterUserDTO(
             firstName = firstName,
             lastName = lastName,
@@ -150,7 +153,9 @@ fun RegisterScreen() {
                 validPasswordError = !Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$").matches(password)  && password.isNotBlank()
 
                 if (!firstNameError && !lastNameError && !emailError && !passwordError && !confirmPasswordError && !passwordMismatchError && !validEmailError && !validPasswordError) {
-                    registerPost()
+                    scope.launch {            // 👈 On lance la suspend ici
+                        registerPost()
+                    }
                 }
             },
             modifier = Modifier.fillMaxWidth()
