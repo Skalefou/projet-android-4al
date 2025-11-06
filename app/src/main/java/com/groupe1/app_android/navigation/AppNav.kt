@@ -34,12 +34,11 @@ fun AppNav(nav: NavHostController) {
             )
         }
         composable(Routes.login) { LoginScreen() }
-        composable(Routes.register) { RegisterScreen(
-            onClickGoToHome={ nav.navigate(Routes.home) }
-        ) }
-
-        composable(Routes.home) {
-            HomeScreen()
+        composable(Routes.register) {
+            RegisterScreen(
+                onClickGoToHome = { nav.navigate(Routes.home) }
+            )
         }
+        composable(Routes.home) { HomeScreen() }
     }
 }
