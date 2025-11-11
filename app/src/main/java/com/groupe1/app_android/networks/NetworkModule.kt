@@ -1,6 +1,7 @@
 package com.groupe1.app_android.networks
 
 import com.groupe1.app_android.BuildConfig
+import com.groupe1.app_android.api.SearchBarCityApi
 import com.groupe1.app_android.api.UserApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
@@ -35,4 +36,12 @@ object NetworkModule {
     }
 
     val userApi: UserApi by lazy { retrofit.create(UserApi::class.java) }
+
+    val searchBarCityApi: SearchBarCityApi by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://api.mapbox.com/")
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+            .build()
+            .create(SearchBarCityApi::class.java)
+    }
 }
