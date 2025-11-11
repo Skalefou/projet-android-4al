@@ -17,6 +17,7 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "MAPBOX_TOKEN", "\"pk.eyJ1IjoidmFuYW5odGEiLCJhIjoiY21oc2NmdTR0MGZ3ODJsc2NidW44bzhhaSJ9.ZPXXmTJOPxbf4vmEOHm96w\"")
     }
 
     buildTypes {
@@ -32,6 +33,7 @@ android {
             buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:8080\"")
         }
     }
+
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
