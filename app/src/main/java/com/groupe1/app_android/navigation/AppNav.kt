@@ -11,12 +11,14 @@ import com.groupe1.app_android.ui.main.HomeScreen
 import com.groupe1.app_android.ui.loginRegister.LoginRegisterGateScreen
 import com.groupe1.app_android.ui.loginRegister.LoginScreen
 import com.groupe1.app_android.ui.loginRegister.RegisterScreen
+import com.groupe1.app_android.ui.main.FilterAdScreen
 
 object Routes {
     const val gate = "gate"
     const val login = "login"
     const val register = "register"
     const val home = "home"
+    const val filterAd = "filterAd"
 }
 
 @Composable
@@ -39,7 +41,12 @@ fun AppNav(nav: NavHostController) {
         ) }
 
         composable(Routes.home) {
-            HomeScreen()
+            HomeScreen(
+                onTriggerFilterAd = { nav.navigate(Routes.filterAd) }
+            )
+        }
+        composable(Routes.filterAd) {
+            FilterAdScreen()
         }
     }
 }

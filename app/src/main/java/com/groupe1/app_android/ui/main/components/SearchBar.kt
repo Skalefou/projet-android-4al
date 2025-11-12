@@ -4,11 +4,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Job
@@ -63,7 +65,17 @@ fun SearchBar(
                         contentDescription = "Search Icon"
                     )
                 },
-                modifier = Modifier.fillMaxWidth()
+                shape = RoundedCornerShape(50),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color(0xFFF6F6F6),
+                    unfocusedContainerColor = Color(0xFFF6F6F6),
+                    disabledContainerColor = Color(0xFFF6F6F6),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    cursorColor = Color.DarkGray
+                ),
+                modifier = Modifier.fillMaxWidth().height(56.dp)
             )
         }
 
