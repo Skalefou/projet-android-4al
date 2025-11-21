@@ -17,6 +17,7 @@ import com.groupe1.app_android.dtos.RegisterUserDTO
 import com.groupe1.app_android.services.UserService
 import com.groupe1.app_android.session.UserStore
 import com.groupe1.app_android.ui.theme.HoneyYellow
+import com.groupe1.app_android.ui.theme.defaultOutlinedTextFieldColors()
 import kotlinx.coroutines.launch
 
 
@@ -40,12 +41,6 @@ fun RegisterScreen(
     var passwordMismatchError by remember { mutableStateOf(false) }
     var validEmailError by remember { mutableStateOf(false) }
     var validPasswordError by remember { mutableStateOf(false) }
-
-    val colorOutlinedTextField = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = HoneyYellow,
-        unfocusedBorderColor = HoneyYellow,
-        errorBorderColor = Color.Red
-    )
 
     suspend fun registerPost() {
         val registerUser = RegisterUserDTO(
@@ -73,7 +68,7 @@ fun RegisterScreen(
             label = { Text("Prénom") },
             isError = firstNameError,
             modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            colors = colorOutlinedTextField,
+            colors = defaultOutlinedTextFieldColors(),
             singleLine = true
         )
         if (firstNameError) {
@@ -86,7 +81,7 @@ fun RegisterScreen(
             label = { Text("Nom") },
             isError = lastNameError,
             modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            colors = colorOutlinedTextField,
+            colors = defaultOutlinedTextFieldColors(),
             singleLine = true
         )
         if (lastNameError) {
@@ -99,7 +94,7 @@ fun RegisterScreen(
             label = { Text("Email") },
             isError = emailError,
             modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            colors = colorOutlinedTextField,
+            colors = defaultOutlinedTextFieldColors(),
             singleLine = true
         )
         if (emailError) {
@@ -116,7 +111,7 @@ fun RegisterScreen(
             visualTransformation = PasswordVisualTransformation(),
             isError = passwordError,
             modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            colors = colorOutlinedTextField,
+            colors = defaultOutlinedTextFieldColors(),
             singleLine = true
         )
         if (passwordError) {
@@ -133,7 +128,7 @@ fun RegisterScreen(
             visualTransformation = PasswordVisualTransformation(),
             isError = confirmPasswordError,
             modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-            colors = colorOutlinedTextField,
+            colors = defaultOutlinedTextFieldColors(),
             singleLine = true
         )
         if (confirmPasswordError) {
