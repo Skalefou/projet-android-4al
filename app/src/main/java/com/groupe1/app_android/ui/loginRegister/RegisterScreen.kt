@@ -16,8 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.groupe1.app_android.dtos.RegisterUserDTO
 import com.groupe1.app_android.services.UserService
 import com.groupe1.app_android.session.UserStore
-import com.groupe1.app_android.ui.theme.HoneyYellow
-import com.groupe1.app_android.ui.theme.defaultOutlinedTextFieldColors()
+import com.groupe1.app_android.ui.theme.defaultOutlinedTextFieldColors
 import kotlinx.coroutines.launch
 
 
