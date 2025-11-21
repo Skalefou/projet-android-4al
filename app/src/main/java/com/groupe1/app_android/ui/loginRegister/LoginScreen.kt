@@ -19,6 +19,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.groupe1.app_android.dtos.LoginUserDTO
+import com.groupe1.app_android.services.UserService
+import com.groupe1.app_android.session.UserStore
 import com.groupe1.app_android.ui.theme.defaultOutlinedTextFieldColors
 
 @Composable
@@ -30,8 +33,13 @@ fun LoginScreen() {
     var passwordErrorEmpty by remember { mutableStateOf(false) }
     var connexionError by remember { mutableStateOf(false) }
 
-    fun loginPost() {
-
+    suspend fun loginPost() {
+        val loginUser = LoginUserDTO(
+            email = email,
+            password = password
+        )
+        val response = UserService.loginUser(loginUser)
+        UserStore.login(response.user)
     }
 
     Column(

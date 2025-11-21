@@ -1,5 +1,7 @@
 package com.groupe1.app_android.services
 
+import com.groupe1.app_android.dtos.AuthResponseDTO
+import com.groupe1.app_android.dtos.LoginUserDTO
 import com.groupe1.app_android.dtos.RegisterUserDTO
 import com.groupe1.app_android.models.User
 import com.groupe1.app_android.networks.NetworkModule
@@ -25,5 +27,16 @@ object UserService {
         }
 
         return userApi.register(registerUser)
+    }
+
+    suspend fun loginUser(loginUser : LoginUserDTO): AuthResponseDTO {
+        if (loginUser.email.isBlank()) {
+            throw IllegalArgumentException("L'email ne peut pas être vide.")
+        }
+        if (loginUser.password.isBlank()) {
+            throw IllegalArgumentException("Le mot de passe ne peut pas être vide.")
+        }
+
+        return userApi.login(loginUser)
     }
 }
