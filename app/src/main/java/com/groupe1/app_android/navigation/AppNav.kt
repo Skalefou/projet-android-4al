@@ -19,6 +19,7 @@ object Routes {
     const val register = "register"
     const val home = "home"
     const val filterAd = "filterAd"
+    const val profile = "profile"
 }
 
 @Composable
@@ -42,11 +43,15 @@ fun AppNav(nav: NavHostController) {
 
         composable(Routes.home) {
             HomeScreen(
-                onTriggerFilterAd = { nav.navigate(Routes.filterAd) }
+                onTriggerFilterAd = { nav.navigate(Routes.filterAd) },
+                onOpenProfile = { nav.navigate(Routes.profile) }
             )
         }
         composable(Routes.filterAd) {
             FilterAdScreen()
+        }
+        composable(Routes.profile) {
+            com.groupe1.app_android.ui.profile.ProfileRoute(nav = nav)
         }
     }
 }
