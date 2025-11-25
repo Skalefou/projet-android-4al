@@ -37,6 +37,7 @@ fun AppNav(nav: NavHostController) {
             )
         }
         composable(Routes.login) { LoginScreen() }
+<<<<<<< HEAD
         composable(Routes.register) { RegisterScreen(
             onClickGoToHome={ nav.navigate(Routes.home) }
         ) }
@@ -52,6 +53,13 @@ fun AppNav(nav: NavHostController) {
         }
         composable(Routes.profile) {
             com.groupe1.app_android.ui.profile.ProfileRoute(nav = nav)
+=======
+        composable(Routes.register) {
+            RegisterScreen(
+                onClickGoToHome = { nav.navigate(Routes.home) }
+            )
+>>>>>>> remotes/origin/navbar
         }
+        composable(Routes.home) { HomeScreen() }
     }
 }
