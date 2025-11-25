@@ -17,16 +17,24 @@ import com.groupe1.app_android.ui.loginRegister.RegisterScreen
 import com.groupe1.app_android.ui.main.FilterAdScreen
 import com.groupe1.app_android.ui.main.HomeScreen
 import com.groupe1.app_android.ui.components.TopNavBar
+import com.groupe1.app_android.ui.main.MapScreen
+import com.groupe1.app_android.ui.main.WishlistScreen
+import com.groupe1.app_android.ui.main.TripsScreen
+import com.groupe1.app_android.ui.main.InboxScreen
 
 object Routes {
     const val gate = "gate"
     const val login = "login"
     const val register = "register"
     const val home = "home"
-    const val search = "search" // nouveau alias pour FilterAdScreen
-    const val filterAd = "filterAd" // gardé pour compat éventuelle
+    const val search = "search" // alias pour FilterAdScreen
+    const val filterAd = "filterAd" // compat éventuelle
     const val profile = "profile"
     const val settings = "settings"
+    const val map = "map"
+    const val wishlist = "wishlist"
+    const val trips = "trips"
+    const val inbox = "inbox"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,7 +44,16 @@ fun AppNav(nav: NavHostController) {
     val backStackEntry by nav.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
 
-    val routesWithTopBar = setOf(Routes.home, Routes.search, Routes.filterAd, Routes.settings)
+    val routesWithTopBar = setOf(
+        Routes.home,
+        Routes.search,
+        Routes.filterAd,
+        Routes.settings,
+        Routes.map,
+        Routes.wishlist,
+        Routes.trips,
+        Routes.inbox
+    )
     val showTopBar = currentRoute in routesWithTopBar
 
     androidx.compose.material3.Scaffold(
@@ -44,7 +61,11 @@ fun AppNav(nav: NavHostController) {
             if (showTopBar) {
                 TopNavBar(
                     currentRoute = currentRoute,
-                    onOpenProfile = { nav.navigate(Routes.profile) }
+                    onNavigate = { target ->
+                        if (target != null && target != currentRoute) {
+                            nav.navigate(target) { launchSingleTop = true }
+                        }
+                    }
                 )
             }
         }
@@ -66,15 +87,13 @@ fun AppNav(nav: NavHostController) {
                     onClickGoToHome = { nav.navigate(Routes.home) }
                 )
             }
-            composable(Routes.home) {
-                HomeScreen(
-                    onTriggerFilterAd = { nav.navigate(Routes.search) }
-                )
-            }
-            // route de recherche (ex-FilterAd)
+            composable(Routes.home) { HomeScreen(onTriggerFilterAd = { nav.navigate(Routes.search) }) }
             composable(Routes.search) { FilterAdScreen() }
-            // ancienne route conservée si déjà référencée
             composable(Routes.filterAd) { FilterAdScreen() }
+            composable(Routes.map) { MapScreen() }
+            composable(Routes.wishlist) { WishlistScreen() }
+            composable(Routes.trips) { TripsScreen() }
+            composable(Routes.inbox) { InboxScreen() }
             composable(Routes.profile) { com.groupe1.app_android.ui.profile.ProfileRoute(nav = nav) }
             composable(Routes.settings) { com.groupe1.app_android.ui.settings.SettingsScreen() }
         }
