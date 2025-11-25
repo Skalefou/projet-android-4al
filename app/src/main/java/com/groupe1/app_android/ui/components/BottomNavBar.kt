@@ -9,16 +9,17 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import com.groupe1.app_android.navigation.Routes
 
 sealed class BottomNavItem(
     val route: String,
     val icon: ImageVector,
     val label: String
 ) {
-    object Home : BottomNavItem("home", Icons.Default.Home, "Accueil")
-    object Search : BottomNavItem("search", Icons.Default.Search, "Rechercher")
-    object Profile : BottomNavItem("profile", Icons.Default.Person, "Profil")
-    object Settings : BottomNavItem("settings", Icons.Default.Settings, "Paramètres")
+    object Home : BottomNavItem(Routes.home, Icons.Default.Home, "Accueil")
+    object Search : BottomNavItem(Routes.search, Icons.Default.Search, "Rechercher")
+    object Profile : BottomNavItem(Routes.profile, Icons.Default.Person, "Profil")
+    object Settings : BottomNavItem(Routes.settings, Icons.Default.Settings, "Paramètres")
 }
 
 @Composable
@@ -48,5 +49,5 @@ fun BottomNavBar(
 @Composable
 @Preview
 fun BottomNavBarPreview() {
-    BottomNavBar(currentRoute = "home", onNavigate = {})
+    BottomNavBar(currentRoute = Routes.home, onNavigate = {})
 }

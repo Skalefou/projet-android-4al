@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,8 +15,7 @@ import com.groupe1.app_android.ui.main.components.FilterAdTriggerButton
 
 @Composable
 fun HomeScreen(
-    onTriggerFilterAd: () -> Unit,
-    onOpenProfile: () -> Unit
+    onTriggerFilterAd: () -> Unit
 ) {
 
     Surface {
@@ -30,9 +28,7 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Button(onClick = { onOpenProfile() }) {
-                Text(text = "Profil")
-            }
+            Text(text = "Bienvenue sur l'accueil")
         }
     }
 }
@@ -40,5 +36,5 @@ fun HomeScreen(
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(onTriggerFilterAd = {println("Start filtering ad!") }, onOpenProfile = { println("Open profile") })
+    HomeScreen(onTriggerFilterAd = { println("Start filtering ad!") })
 }
