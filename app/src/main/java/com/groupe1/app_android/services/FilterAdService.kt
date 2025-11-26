@@ -13,4 +13,12 @@ object FilterAdService {
         )
         return res.features.mapNotNull { it.properties?.fullAddress ?: it.properties?.name }.distinct()
     }
+
+    suspend fun saveRecentSearch() {
+        return TODO("Provide the return value")
+    }
+    suspend fun fetchRecentSearch(): List<String> {
+
+        return TODO("Provide the return value")
+    }
 }
