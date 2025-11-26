@@ -11,7 +11,7 @@ import com.groupe1.app_android.ui.main.HomeScreen
 import com.groupe1.app_android.ui.loginRegister.LoginRegisterGateScreen
 import com.groupe1.app_android.ui.loginRegister.LoginScreen
 import com.groupe1.app_android.ui.loginRegister.RegisterScreen
-import com.groupe1.app_android.ui.main.FilterAdScreen
+import com.groupe1.app_android.ui.filterListing.screens.FilterAdScreen
 
 object Routes {
     const val gate = "gate"

@@ -1,4 +1,4 @@
-package com.groupe1.app_android.ui.main.components
+package com.groupe1.app_android.ui.filterListing.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,7 +41,7 @@ fun SearchBar(
                     searchJob?.cancel()
                     if (newValue.length >= 2) {
                         searchJob = scope.launch {
-                            delay(300)
+                            delay(200)
                             runCatching { FilterAdService.searchCities(newValue) }
                                 .onSuccess {
                                     suggestions = it
@@ -57,7 +57,7 @@ fun SearchBar(
                         expanded = false
                     }
                 },
-                placeholder = { Text("Commencer ma recherche") },
+                placeholder = { Text("Rechercher une destination") },
                 singleLine = true,
                 leadingIcon = {
                     Icon(
