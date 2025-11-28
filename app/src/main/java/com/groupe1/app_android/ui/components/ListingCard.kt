@@ -3,6 +3,7 @@ package com.groupe1.app_android.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
@@ -35,11 +37,12 @@ fun ListingCard(modifier: Modifier, listing: Listing) {
             .fillMaxWidth()
     ) {
         AsyncImage(
-            model = "https://media.istockphoto.com/id/627795510/photo/example.jpg?s=612x612&w=0&k=20&c=lpUf5rjPVd6Kl_M6heqC8sUncR4FLmtsRzeYdTr5X_I=",
+            model = listing.firstImage,
             contentDescription = null,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
-                .height(250.dp)
+                .aspectRatio(16f / 9f)
                 .fillMaxWidth()
                 .background(Color.Blue)
         )
@@ -67,7 +70,7 @@ fun ListingCard(modifier: Modifier, listing: Listing) {
                         append(listing.priceByNight.toString() + "€")
                     }
 
-                    append(" la nuit.")
+                    append(" la nuit")
                 },
                 fontFamily = FontFamily(Font(R.font.montserrat_medium)),
             )
@@ -83,6 +86,7 @@ fun ListingCardPreview() {
         Listing(
             id = 1L,
             title = "Charming Cottage",
+            firstImage = "https://cf.bstatic.com/xdata/images/hotel/max1024x768/120251269.jpg?k=638701338fd3475774a6d0e01848f44d44a450b162680bd7d9e7207e5aeb2871&o=",
             city = "Saint-Tropez",
             description = "A cozy cottage in the countryside.",
             priceByNight = 120.0,
