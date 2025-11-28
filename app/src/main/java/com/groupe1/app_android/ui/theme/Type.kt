@@ -29,15 +29,25 @@ val Montserrat = FontFamily(
     Font(R.font.montserrat_thinitalic, FontWeight.Thin),
 )
 
+val MontserratBasic = FontFamily(
+    Font(R.font.montserrat_variablefont_wght)
+)
+
 // Set of Material typography styles to start with
 val Typography = Typography(
-    // Display
     displayLarge = TextStyle(
+        fontFamily = MontserratBasic,
+        fontWeight = FontWeight.Normal,
+        fontSize = 6.sp,
+        lineHeight = 32.sp
+    ),
+    // Display
+    /*displayLarge = TextStyle(
         fontFamily = Montserrat,
         fontWeight = FontWeight.Black,
         fontSize = 57.sp,
         lineHeight = 64.sp
-    ),
+    ),*/
     displayMedium = TextStyle(
         fontFamily = Montserrat,
         fontWeight = FontWeight.Bold,
