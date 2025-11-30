@@ -1,6 +1,7 @@
-package com.groupe1.app_android.domain.models
+package com.groupe1.app_android.data.remote.models
 
-data class Listing(
+
+data class ListingDto(
     val id: Long,
     val title: String,
     val description: String,
