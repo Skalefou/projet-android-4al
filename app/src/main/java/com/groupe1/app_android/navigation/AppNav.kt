@@ -7,11 +7,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.groupe1.app_android.auth.AuthState
-import com.groupe1.app_android.ui.main.HomeScreen
-import com.groupe1.app_android.ui.loginRegister.LoginRegisterGateScreen
-import com.groupe1.app_android.ui.loginRegister.LoginScreen
-import com.groupe1.app_android.ui.loginRegister.RegisterScreen
-import com.groupe1.app_android.ui.filterListing.screens.FilterAdScreen
+import com.groupe1.app_android.ui.screens.HomeScreen
+import com.groupe1.app_android.ui.screens.LoginRegisterGateScreen
+import com.groupe1.app_android.ui.screens.LoginScreen
+import com.groupe1.app_android.ui.screens.RegisterScreen
+import com.groupe1.app_android.ui.screens.FilterAdScreen
+import com.groupe1.app_android.viewModels.ListingsViewModel
 
 object Routes {
     const val gate = "gate"
@@ -22,7 +23,7 @@ object Routes {
 }
 
 @Composable
-fun AppNav(nav: NavHostController) {
+fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
     val isLoggedIn by AuthState.isLoggedIn.collectAsState()
 
     NavHost(
@@ -36,12 +37,15 @@ fun AppNav(nav: NavHostController) {
             )
         }
         composable(Routes.login) { LoginScreen() }
-        composable(Routes.register) { RegisterScreen(
-            onClickGoToHome={ nav.navigate(Routes.home) }
-        ) }
+        composable(Routes.register) {
+            RegisterScreen(
+                onClickGoToHome = { nav.navigate(Routes.home) }
+            )
+        }
 
         composable(Routes.home) {
             HomeScreen(
+                listingsViewModel,
                 onTriggerFilterAd = { nav.navigate(Routes.filterAd) }
             )
         }

@@ -8,6 +8,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.logging.HttpLoggingInterceptor.Level
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -17,6 +18,11 @@ object NetworkModule {
 
     val api: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
+        .client(
+            OkHttpClient.Builder()
+                .addInterceptor(HttpLoggingInterceptor().setLevel(Level.BASIC))
+                .build()
+        )
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

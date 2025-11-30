@@ -33,7 +33,7 @@ import com.groupe1.app_android.domain.models.Listing
 fun ListingCard(modifier: Modifier, listing: Listing) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
     ) {
         AsyncImage(
@@ -86,11 +86,25 @@ fun ListingCardPreview() {
         Listing(
             id = 1L,
             title = "Charming Cottage",
+            description = "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat Cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat Ut enim ad minim veniam quis nostrud exercitation ullamco laboris",
+            numberOfRooms = 3,
+            numberOfBathrooms = 1,
+            numberOfBed = 3,
+            hasWifi = true,
+            hasWashingMachine = true,
+            hasAirConditioning = true,
+            hasTv = true,
+            hasParking = true,
+            maxGuests = 6,
+            address = "Avenue de Gauthier",
+            zipCode = "75001",
+            city = "Paris",
+            country = "France",
             firstImage = "https://cf.bstatic.com/xdata/images/hotel/max1024x768/120251269.jpg?k=638701338fd3475774a6d0e01848f44d44a450b162680bd7d9e7207e5aeb2871&o=",
-            city = "Saint-Tropez",
-            description = "A cozy cottage in the countryside.",
-            priceByNight = 120.0,
-            ownerId = 10L,
+            secondImage = "https://cf.bstatic.com/xdata/images/hotel/max1024x768/120251269.jpg?k=638701338fd3475774a6d0e01848f44d44a450b162680bd7d9e7207e5aeb2871&o=",
+            thirdImage = "https://cf.bstatic.com/xdata/images/hotel/max1024x768/120251269.jpg?k=638701338fd3475774a6d0e01848f44d44a450b162680bd7d9e7207e5aeb2871&o=",
+            priceByNight = 120,
+            ownerId = 10,
             ownerName = "Alice"
         )
     )

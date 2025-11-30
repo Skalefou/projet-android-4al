@@ -1,5 +1,6 @@
-package com.groupe1.app_android.ui.loginRegister
+package com.groupe1.app_android.ui.screens
 
+import android.util.Patterns
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
@@ -151,7 +152,7 @@ fun RegisterScreen(
                 passwordError = password.isBlank()
                 confirmPasswordError = confirmPassword.isBlank()
                 passwordMismatchError = password != confirmPassword
-                validEmailError = !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotBlank()
+                validEmailError = !Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotBlank()
                 validPasswordError = !Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$").matches(password)  && password.isNotBlank()
 
                 if (!firstNameError && !lastNameError && !emailError && !passwordError && !confirmPasswordError && !passwordMismatchError && !validEmailError && !validPasswordError) {

@@ -1,4 +1,4 @@
-package com.groupe1.app_android.ui.filterListing.components
+package com.groupe1.app_android.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
