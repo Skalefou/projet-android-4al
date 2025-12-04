@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,7 +35,7 @@ fun ListingCard(modifier: Modifier, listing: Listing) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         AsyncImage(
             model = listing.firstImage,
@@ -55,6 +56,8 @@ fun ListingCard(modifier: Modifier, listing: Listing) {
             )
             Text(
                 listing.description,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 fontFamily = FontFamily(Font(R.font.montserrat_medium)),
                 color = Color.Gray
             )

@@ -9,7 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.groupe1.app_android.data.repository.ListingRepositoryImpl
 import com.groupe1.app_android.domain.usecase.listings.GetAllListingUseCase
 import com.groupe1.app_android.domain.usecase.listings.ListingUseCases
-import com.groupe1.app_android.navigation.AppNav
+import com.groupe1.app_android.ui.navigation.AppNav
 import com.groupe1.app_android.ui.theme.ProjetandroidTheme
 import com.groupe1.app_android.viewModels.ListingsViewModel
 
