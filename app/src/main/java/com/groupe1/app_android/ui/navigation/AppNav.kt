@@ -37,7 +37,7 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
 
     NavHost(
         navController = nav,
-        startDestination = if (!isLoggedIn) Routes.HOME else Routes.GATE
+        startDestination = if (isLoggedIn) Routes.HOME else Routes.GATE
     ) {
         composable(Routes.GATE) {
             LoginRegisterGateScreen(
