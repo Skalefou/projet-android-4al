@@ -13,8 +13,8 @@ import com.groupe1.app_android.ui.screens.HomeScreen
 import com.groupe1.app_android.ui.screens.LoginRegisterGateScreen
 import com.groupe1.app_android.ui.screens.LoginScreen
 import com.groupe1.app_android.ui.screens.RegisterScreen
-import com.groupe1.app_android.ui.screens.FilterAdScreen
 import com.groupe1.app_android.ui.screens.ListingScreen
+import com.groupe1.app_android.ui.screens.filterListing.FilterWhereScreen
 import com.groupe1.app_android.viewModels.ListingsViewModel
 
 object Routes {
@@ -57,7 +57,7 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
             )
         }
         composable(Routes.FILTER_AD) {
-            FilterAdScreen()
+            FilterWhereScreen()
         }
         composable(
             route = Routes.LISTING,

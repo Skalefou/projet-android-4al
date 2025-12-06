@@ -156,7 +156,7 @@ fun RegisterScreen(
                 validPasswordError = !Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$").matches(password)  && password.isNotBlank()
 
                 if (!firstNameError && !lastNameError && !emailError && !passwordError && !confirmPasswordError && !passwordMismatchError && !validEmailError && !validPasswordError) {
-                    scope.launch {            // 👈 On lance la suspend ici
+                    scope.launch {
                         registerPost()
                     }
                     onClickGoToHome()

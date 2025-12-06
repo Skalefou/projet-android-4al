@@ -22,7 +22,6 @@ import com.groupe1.app_android.ui.theme.HoneyYellow
 import com.groupe1.app_android.utils.Constants
 
 @Composable
-@Preview()
 fun LoginRegisterGateScreen(
     onClickLogin: () -> Unit,
     onClickRegister: () -> Unit
