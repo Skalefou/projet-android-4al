@@ -1,8 +1,13 @@
 package com.groupe1.app_android.ui.navigation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -32,7 +37,7 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
 
     NavHost(
         navController = nav,
-        startDestination = if (isLoggedIn) Routes.HOME else Routes.GATE
+        startDestination = if (!isLoggedIn) Routes.HOME else Routes.GATE
     ) {
         composable(Routes.GATE) {
             LoginRegisterGateScreen(
@@ -65,7 +70,10 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
         ) { backStackEntry ->
             val listingId = backStackEntry.arguments?.getLong("listingId")
             requireNotNull(listingId)
-            ListingScreen(listingId = listingId)
+            ListingScreen(
+                modifier = Modifier
+                    .background(Color.Gray),
+                listingId = listingId)
         }
     }
 }
