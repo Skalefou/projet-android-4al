@@ -1,8 +1,18 @@
 package com.groupe1.app_android.ui.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -31,20 +41,17 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
     val isLoggedIn by AuthState.isLoggedIn.collectAsState()
 
     NavHost(
-        navController = nav,
-        startDestination = if (isLoggedIn) Routes.HOME else Routes.GATE
+        navController = nav, startDestination = if (isLoggedIn) Routes.HOME else Routes.GATE
     ) {
         composable(Routes.GATE) {
             LoginRegisterGateScreen(
                 onClickLogin = { nav.navigate(Routes.LOGIN) },
-                onClickRegister = { nav.navigate(Routes.REGISTER) }
-            )
+                onClickRegister = { nav.navigate(Routes.REGISTER) })
         }
         composable(Routes.LOGIN) { LoginScreen() }
         composable(Routes.REGISTER) {
             RegisterScreen(
-                onClickGoToHome = { nav.navigate(Routes.HOME) }
-            )
+                onClickGoToHome = { nav.navigate(Routes.HOME) })
         }
 
         composable(Routes.HOME) {
@@ -53,19 +60,26 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
                 onTriggerFilterAd = { nav.navigate(Routes.FILTER_LISTING) },
                 onItemClick = { listingId ->
                     nav.navigate("listing/$listingId")
-                }
-            )
+                })
         }
         composable(Routes.FILTER_LISTING) {
             FilterWhereScreen()
         }
         composable(
             route = Routes.LISTING,
-            arguments = listOf(navArgument("listingId") { type = NavType.LongType })
-        ) { backStackEntry ->
+            arguments = listOf(navArgument("listingId") { type = NavType.LongType }),
+            enterTransition = {
+                fadeIn(tween(200)) + scaleIn(tween(200), initialScale = 0.9f)
+            },
+            exitTransition = {
+                fadeOut(tween(200)) + scaleOut(tween(200), targetScale = 1.1f)
+            }) { backStackEntry ->
             val listingId = backStackEntry.arguments?.getLong("listingId")
-            requireNotNull(listingId)
-            ListingScreen(listingId = listingId)
+                ?: error("listingId missing in navigation")
+            ListingScreen(
+                modifier = Modifier.background(Color.Gray),
+                listingId = listingId,
+                onBackClick = { nav.popBackStack() })
         }
     }
 }
