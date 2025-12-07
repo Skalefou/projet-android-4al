@@ -1,33 +1,23 @@
 package com.groupe1.app_android.ui.screens.filterListing
 
-
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.absolutePadding
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.groupe1.app_android.ui.components.SearchBar
+import com.groupe1.app_android.ui.components.DateRangeHeadline
 import com.groupe1.app_android.ui.theme.HoneyYellow
+import java.util.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilterWhereScreen() {
-    var query by remember { mutableStateOf("") }
+fun FilterWhenScreen() {
+    val dateRangeState = rememberDateRangePickerState()
 
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -37,31 +27,81 @@ fun FilterWhereScreen() {
                 .fillMaxSize()
                 .absolutePadding(25.dp, 50.dp, 25.dp, 50.dp)
         ) {
+            // Title
             Text(
-                text = "Où partez-vous ?",
+                text = "Quand partez-vous ?",
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(30.dp))
 
-            SearchBar(
-                query = query,
-                onQueryChange = { query = it }
-            )
+            // Calendar that updates dateRangeState
+            Row(
+                modifier = Modifier
+                    .sizeIn(maxHeight = 660.dp)
+                    .fillMaxWidth()
+            ) {
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+                    ) {
 
-            Spacer(modifier = Modifier.height(24.dp))
 
-            Text(
-                text = "Recherches récentes",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
+                        val selectableDates =
+                            object : SelectableDates {
+                                override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                                    return true
+                                }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                                override fun isSelectableYear(year: Int): Boolean {
+                                    val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+                                    return year >= currentYear
+                                }
+                            }
 
+
+                        val dateRangePickerState = rememberDateRangePickerState(
+                            selectableDates = selectableDates
+                        )
+
+                        DateRangePicker(
+                            state = dateRangeState,
+                            modifier = Modifier.fillMaxWidth(),
+                            title = {},
+                            headline = {
+                                DateRangeHeadline(
+                                    startDate = dateRangeState.selectedStartDateMillis,
+                                    endDate = dateRangeState.selectedEndDateMillis
+                                )
+                            },
+                            showModeToggle = false,
+                            colors = DatePickerDefaults.colors(
+                                containerColor = Color.Transparent,
+                                dividerColor = Color.Transparent,
+                                titleContentColor = MaterialTheme.colorScheme.onSurface,
+                                headlineContentColor = MaterialTheme.colorScheme.onSurface,
+                                weekdayContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                subheadContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        )
+
+
+                    }
+                }
+            }
+            Spacer(Modifier.height(16.dp))
+
+            // Next button
             Button(
-                onClick = { /* TODO */ },
+                onClick = {
+                    // dateRangeState.selectedStartDateMillis / selectedEndDateMillis
+                    // contain the chosen dates here
+                },
                 shape = RoundedCornerShape(50),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -76,8 +116,10 @@ fun FilterWhereScreen() {
     }
 }
 
-@Preview(showBackground = true)
+
+
+@Preview
 @Composable
-fun FilterWhereScreennPreview() {
-    FilterWhereScreen()
+fun FilterWhenScreenPreview_1() {
+    FilterWhenScreen()
 }
