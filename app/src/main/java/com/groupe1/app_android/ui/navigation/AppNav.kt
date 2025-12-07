@@ -22,7 +22,7 @@ object Routes {
     const val LOGIN = "login"
     const val REGISTER = "register"
     const val HOME = "home"
-    const val FILTER_AD = "filterAd"
+    const val FILTER_LISTING = "filterListing"
     const val LISTING = "listing/{listingId}"
 }
 
@@ -50,13 +50,13 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
         composable(Routes.HOME) {
             HomeScreen(
                 listingsViewModel,
-                onTriggerFilterAd = { nav.navigate(Routes.FILTER_AD) },
+                onTriggerFilterAd = { nav.navigate(Routes.FILTER_LISTING) },
                 onItemClick = { listingId ->
                     nav.navigate("listing/$listingId")
                 }
             )
         }
-        composable(Routes.FILTER_AD) {
+        composable(Routes.FILTER_LISTING) {
             FilterWhereScreen()
         }
         composable(
