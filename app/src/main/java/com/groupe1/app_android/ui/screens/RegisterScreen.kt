@@ -14,8 +14,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.groupe1.app_android.dtos.RegisterUserDTO
-import com.groupe1.app_android.services.UserService
+import com.groupe1.app_android.data.remote.models.RegisterUserDTO
+import com.groupe1.app_android.data.remote.UserRemoteDataSource
 import com.groupe1.app_android.session.UserStore
 import com.groupe1.app_android.ui.theme.HoneyYellow
 import kotlinx.coroutines.launch
@@ -55,7 +55,7 @@ fun RegisterScreen(
             email = email,
             password = password
         )
-        val user = UserService.registerUser(registerUser)
+        val user = UserRemoteDataSource.registerUser(registerUser)
         UserStore.login(user)
     }
 

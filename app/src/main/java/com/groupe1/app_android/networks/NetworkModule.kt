@@ -1,7 +1,7 @@
 package com.groupe1.app_android.networks
 
 import com.groupe1.app_android.BuildConfig
-import com.groupe1.app_android.api.UserApi
+import com.groupe1.app_android.data.remote.services.UserApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
