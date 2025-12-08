@@ -18,7 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.groupe1.app_android.domain.models.Listing
-import com.groupe1.app_android.ui.components.ListingCard
+import com.groupe1.app_android.ui.components.listing.ListingCard
 import com.groupe1.app_android.ui.components.FilterAdTriggerButton
 import com.groupe1.app_android.viewModels.ListingsViewModel
 
@@ -28,9 +28,10 @@ fun HomeScreen(
     onTriggerFilterAd: () -> Unit,
     onItemClick: (Long) -> Unit
 ) {
+    // TODO: USE ME
     val remoteListings by listingsViewModel.remoteListings.collectAsState()
 
-    // Todo : remove
+    // Todo : remove, it's temporary
     val listings = listOf(
         Listing(
             id = 1L,
