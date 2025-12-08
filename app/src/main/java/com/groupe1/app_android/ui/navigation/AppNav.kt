@@ -57,7 +57,7 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
 
     NavHost(
         navController = nav,
-        startDestination = if (hasValidRefresh) Routes.GATE else Routes.HOME
+        startDestination = if (hasValidRefresh) Routes.HOME else Routes.GATE
     ) {
         composable(Routes.GATE) {
             LoginRegisterGateScreen(

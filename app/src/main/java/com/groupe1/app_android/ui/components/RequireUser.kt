@@ -18,11 +18,7 @@ fun RequireUser(
         .data
         .collectAsState(initial = null)
 
-    val prefs = prefsState
-
-    if (prefs == null) {
-        return
-    }
+    val prefs = prefsState ?: return
 
     val user = prefs.currentUser
 
