@@ -21,13 +21,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.datastore.dataStore
-import android.content.Context
 import androidx.compose.ui.platform.LocalContext
 import com.groupe1.app_android.auth.UserPreferences
-import com.groupe1.app_android.auth.UserPreferencesSerializer
 import com.groupe1.app_android.auth.userPreferencesDataStore
-import kotlinx.coroutines.flow.first
 import com.groupe1.app_android.dtos.LoginUserDTO
 import com.groupe1.app_android.services.UserService
 import com.groupe1.app_android.ui.theme.defaultOutlinedTextFieldColors
@@ -46,18 +42,25 @@ fun LoginScreen(
     val scope = rememberCoroutineScope();
     val context = LocalContext.current
 
-    suspend fun loginPost() {
-        val loginUser = LoginUserDTO(
-            email = email,
-            password = password
-        )
-        val response = UserService.loginUser(loginUser)
-        context.userPreferencesDataStore.updateData {
-            UserPreferences(
-                currentUser = response.user,
-                accessToken = response.tokenPair.access,
-                refreshToken = response.tokenPair.refresh
+    suspend fun loginPost(): Boolean {
+        return try {
+            val loginUser = LoginUserDTO(
+                email = email,
+                password = password
             )
+            val response = UserService.loginUser(loginUser)
+            context.userPreferencesDataStore.updateData {
+                UserPreferences(
+                    currentUser = response.user,
+                    accessToken = response.tokenPair.access,
+                    refreshToken = response.tokenPair.refresh
+                )
+            }
+            connexionError = false;
+            true
+        } catch (e: Exception) {
+            connexionError = true;
+            false
         }
     }
 
@@ -123,9 +126,16 @@ fun LoginScreen(
                 scope.launch {
                     emailErrorEmpty = email.isBlank()
                     passwordErrorEmpty = password.isBlank()
-                    loginPost()
+
+                    if (emailErrorEmpty || passwordErrorEmpty) {
+                        return@launch
+                    }
+
+                    val success = loginPost()
+                    if (success) {
+                        onClickGoToHome()
+                    }
                 }
-                onClickGoToHome()
             },
             modifier = Modifier.fillMaxWidth()
         ) {
