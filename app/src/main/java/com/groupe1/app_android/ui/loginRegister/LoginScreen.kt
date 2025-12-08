@@ -6,7 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,7 +36,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
-    onClickGoToHome: () -> Unit
+    onClickGoToHome: () -> Unit,
+    onClickGoToGate: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -67,79 +73,97 @@ fun LoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .padding(24.dp)
     ) {
-        Text(
-            "Connexion",
-            fontSize = 32.sp,
-            modifier = Modifier.padding(bottom = 32.dp),
-            fontWeight = FontWeight.Bold
+
+        IconButton(
+            onClick = { onClickGoToGate() },
+            modifier = Modifier.align(Alignment.Start)
         )
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it; connexionError = false},
-            label = { Text("Email") },
-            isError = connexionError || emailErrorEmpty,
-            modifier = Modifier.padding(bottom = 16.dp),
-            colors = defaultOutlinedTextFieldColors(),
-            singleLine = true
-        )
-        if (emailErrorEmpty) {
-            Text(
-                text = "Le champ \"email\" est obligatoire.",
-                color = androidx.compose.ui.graphics.Color.Red,
-                modifier = Modifier.padding(bottom = 12.dp)
+        {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Retour"
             )
         }
 
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it; connexionError = false },
-            label = { Text("Mot de passe") },
-            visualTransformation = PasswordVisualTransformation(),
-            isError = connexionError || passwordErrorEmpty,
-            modifier = Modifier.padding(bottom = 16.dp),
-            colors = defaultOutlinedTextFieldColors(),
-            singleLine = true
-        )
-        if (passwordErrorEmpty) {
-            Text(
-                text = "Le champ \"mot de passe\" est obligatoire.",
-                color = androidx.compose.ui.graphics.Color.Red,
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
-        }
-
-        if (connexionError) {
-            Text(
-                text = "Email ou mot de passe incorrect",
-                color = androidx.compose.ui.graphics.Color.Red,
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
-            
-        }
-
-        Button(
-            onClick= {
-                scope.launch {
-                    emailErrorEmpty = email.isBlank()
-                    passwordErrorEmpty = password.isBlank()
-
-                    if (emailErrorEmpty || passwordErrorEmpty) {
-                        return@launch
-                    }
-
-                    val success = loginPost()
-                    if (success) {
-                        onClickGoToHome()
-                    }
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Text("Se connecter")
+            Text(
+                "Connexion",
+                fontSize = 32.sp,
+                modifier = Modifier.padding(bottom = 32.dp),
+                fontWeight = FontWeight.Bold
+            )
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it; connexionError = false },
+                label = { Text("Email") },
+                isError = connexionError || emailErrorEmpty,
+                modifier = Modifier.padding(bottom = 16.dp),
+                colors = defaultOutlinedTextFieldColors(),
+                singleLine = true
+            )
+            if (emailErrorEmpty) {
+                Text(
+                    text = "Le champ \"email\" est obligatoire.",
+                    color = androidx.compose.ui.graphics.Color.Red,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+            }
+
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it; connexionError = false },
+                label = { Text("Mot de passe") },
+                visualTransformation = PasswordVisualTransformation(),
+                isError = connexionError || passwordErrorEmpty,
+                modifier = Modifier.padding(bottom = 16.dp),
+                colors = defaultOutlinedTextFieldColors(),
+                singleLine = true
+            )
+            if (passwordErrorEmpty) {
+                Text(
+                    text = "Le champ \"mot de passe\" est obligatoire.",
+                    color = androidx.compose.ui.graphics.Color.Red,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+            }
+
+            if (connexionError) {
+                Text(
+                    text = "Email ou mot de passe incorrect",
+                    color = androidx.compose.ui.graphics.Color.Red,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+
+            }
+
+            Button(
+                onClick = {
+                    scope.launch {
+                        emailErrorEmpty = email.isBlank()
+                        passwordErrorEmpty = password.isBlank()
+
+                        if (emailErrorEmpty || passwordErrorEmpty) {
+                            return@launch
+                        }
+
+                        val success = loginPost()
+                        if (success) {
+                            onClickGoToHome()
+                        }
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Se connecter")
+            }
         }
     }
 }

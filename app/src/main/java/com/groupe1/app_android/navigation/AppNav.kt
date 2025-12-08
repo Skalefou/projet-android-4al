@@ -52,7 +52,8 @@ fun AppNav(nav: NavHostController) {
             )
         }
         composable(Routes.LOGIN) { LoginScreen(
-            onClickGoToHome={ nav.navigate(Routes.HOME) }
+            onClickGoToHome={ nav.navigate(Routes.HOME) },
+            onClickGoToGate={ nav.navigate(Routes.GATE) }
         ) }
         composable(Routes.REGISTER) { RegisterScreen(
             onClickGoToHome={ nav.navigate(Routes.HOME)
