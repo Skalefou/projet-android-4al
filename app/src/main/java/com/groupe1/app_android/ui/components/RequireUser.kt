@@ -5,7 +5,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.groupe1.app_android.auth.userPreferencesDataStore
 import com.groupe1.app_android.models.User
-import com.groupe1.app_android.navigation.Routes
+import com.groupe1.app_android.ui.navigation.Routes
 
 @Composable
 fun RequireUser(

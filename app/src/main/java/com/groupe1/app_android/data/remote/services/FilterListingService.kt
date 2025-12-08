@@ -1,10 +1,10 @@
-package com.groupe1.app_android.api
+package com.groupe1.app_android.data.remote.services
 
-import com.groupe1.app_android.models.GeocodingResponse
+import com.groupe1.app_android.data.remote.models.GeocodingResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface SearchBarCityApi {
+interface FilterListingService {
     @GET("search/geocode/v6/forward")
     suspend fun searchCities(
         @Query("q") query: String,

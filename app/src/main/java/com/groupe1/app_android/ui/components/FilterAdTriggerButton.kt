@@ -1,4 +1,4 @@
-package com.groupe1.app_android.ui.main.components
+package com.groupe1.app_android.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

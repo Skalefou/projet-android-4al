@@ -1,4 +1,4 @@
-package com.groupe1.app_android.ui.loginRegister
+package com.groupe1.app_android.ui.screens
 
 import android.R.attr.text
 import androidx.compose.foundation.layout.Arrangement

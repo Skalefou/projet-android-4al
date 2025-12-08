@@ -1,5 +1,6 @@
-package com.groupe1.app_android.ui.loginRegister
+package com.groupe1.app_android.ui.screens
 
+import android.util.Patterns
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack

@@ -1,4 +1,4 @@
-package com.groupe1.app_android.ui.main.components
+package com.groupe1.app_android.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,10 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.groupe1.app_android.data.repository.FilterListingRepositoryImpl
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import com.groupe1.app_android.services.FilterAdService
 
 @Composable
 fun SearchBar(
@@ -27,6 +27,7 @@ fun SearchBar(
     var expanded by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     var searchJob by remember { mutableStateOf<Job?>(null) }
+    val filterListingRepository: FilterListingRepositoryImpl = FilterListingRepositoryImpl()
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -41,8 +42,8 @@ fun SearchBar(
                     searchJob?.cancel()
                     if (newValue.length >= 2) {
                         searchJob = scope.launch {
-                            delay(300)
-                            runCatching { FilterAdService.searchCities(newValue) }
+                            delay(200)
+                            runCatching { filterListingRepository.searchCities(newValue) }
                                 .onSuccess {
                                     suggestions = it
                                     expanded = it.isNotEmpty()
@@ -57,7 +58,7 @@ fun SearchBar(
                         expanded = false
                     }
                 },
-                placeholder = { Text("Commencer ma recherche") },
+                placeholder = { Text("Rechercher une destination") },
                 singleLine = true,
                 leadingIcon = {
                     Icon(
