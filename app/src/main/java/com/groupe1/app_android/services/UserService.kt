@@ -9,7 +9,7 @@ import com.groupe1.app_android.networks.NetworkModule
 object UserService {
     private val userApi = NetworkModule.userApi
 
-    suspend fun registerUser(registerUser: RegisterUserDTO): User {
+    suspend fun registerUser(registerUser: RegisterUserDTO): AuthResponseDTO {
         if (registerUser.firstName.isBlank()) {
             throw IllegalArgumentException("Le prénom ne peut pas être vide.")
         }

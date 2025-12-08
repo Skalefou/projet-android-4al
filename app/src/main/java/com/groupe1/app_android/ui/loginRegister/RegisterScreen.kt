@@ -12,13 +12,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.groupe1.app_android.auth.UserPreferences
+import com.groupe1.app_android.auth.userPreferencesDataStore
 import com.groupe1.app_android.dtos.RegisterUserDTO
 import com.groupe1.app_android.services.UserService
-import com.groupe1.app_android.session.UserStore
 import com.groupe1.app_android.ui.theme.defaultOutlinedTextFieldColors
 import kotlinx.coroutines.launch
 
@@ -44,16 +46,32 @@ fun RegisterScreen(
     var passwordMismatchError by remember { mutableStateOf(false) }
     var validEmailError by remember { mutableStateOf(false) }
     var validPasswordError by remember { mutableStateOf(false) }
+    var emailAlreadyUsedError by remember { mutableStateOf(false) }
 
-    suspend fun registerPost() {
-        val registerUser = RegisterUserDTO(
-            firstName = firstName,
-            lastName = lastName,
-            email = email,
-            password = password
-        )
-        val user = UserService.registerUser(registerUser)
-        UserStore.login(user)
+    val context = LocalContext.current
+
+    suspend fun registerPost(): Boolean {
+        return try {
+            val registerUser = RegisterUserDTO(
+                firstName = firstName,
+                lastName = lastName,
+                email = email,
+                password = password
+            )
+            val response = UserService.registerUser(registerUser)
+            context.userPreferencesDataStore.updateData {
+                UserPreferences(
+                    currentUser = response.user,
+                    accessToken = response.tokenPair.access,
+                    refreshToken = response.tokenPair.refresh
+                )
+            }
+            emailAlreadyUsedError = false
+            true
+        } catch (e: Exception) {
+            emailAlreadyUsedError = true
+            false
+        }
     }
 
     Column(
@@ -166,6 +184,9 @@ fun RegisterScreen(
             if (passwordMismatchError) {
                 Text("Les mots de passe ne correspondent pas", color = Color.Red, fontSize = 12.sp)
             }
+            if (emailAlreadyUsedError) {
+                Text("Cet email est déjà utilisé", color = Color.Red, fontSize = 12.sp)
+            }
 
             Button(
                 onClick = {
@@ -181,10 +202,12 @@ fun RegisterScreen(
                         !Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$").matches(password) && password.isNotBlank()
 
                     if (!firstNameError && !lastNameError && !emailError && !passwordError && !confirmPasswordError && !passwordMismatchError && !validEmailError && !validPasswordError) {
-                        scope.launch {            // 👈 On lance la suspend ici
-                            registerPost()
+                        scope.launch {
+                            val success = registerPost()
+                            if (success) {
+                                onClickGoToHome()
+                            }
                         }
-                        onClickGoToHome()
                     }
                 },
                 modifier = Modifier.fillMaxWidth()
