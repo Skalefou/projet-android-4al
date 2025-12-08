@@ -12,6 +12,7 @@ import com.groupe1.app_android.ui.loginRegister.LoginRegisterGateScreen
 import com.groupe1.app_android.ui.loginRegister.LoginScreen
 import com.groupe1.app_android.ui.loginRegister.RegisterScreen
 import com.groupe1.app_android.ui.main.FilterAdScreen
+import com.groupe1.app_android.ui.main.components.RequireUser
 
 object Routes {
     const val gate = "gate"
@@ -35,15 +36,21 @@ fun AppNav(nav: NavHostController) {
                 onClickRegister = { nav.navigate(Routes.register) }
             )
         }
-        composable(Routes.login) { LoginScreen() }
-        composable(Routes.register) { RegisterScreen(
+        composable(Routes.login) { LoginScreen(
             onClickGoToHome={ nav.navigate(Routes.home) }
+        ) }
+        composable(Routes.register) { RegisterScreen(
+            onClickGoToHome={ nav.navigate(Routes.home)
+            }
         ) }
 
         composable(Routes.home) {
-            HomeScreen(
-                onTriggerFilterAd = { nav.navigate(Routes.filterAd) }
-            )
+            RequireUser(nav) { user ->
+                HomeScreen(
+                    currentUser = user,
+                    onTriggerFilterAd = { nav.navigate(Routes.filterAd) }
+                )
+            }
         }
         composable(Routes.filterAd) {
             FilterAdScreen()

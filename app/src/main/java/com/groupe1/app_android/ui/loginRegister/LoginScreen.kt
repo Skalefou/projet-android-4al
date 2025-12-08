@@ -1,5 +1,6 @@
 package com.groupe1.app_android.ui.loginRegister
 
+import android.R.attr.text
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,19 +21,30 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.datastore.dataStore
+import android.content.Context
+import androidx.compose.ui.platform.LocalContext
+import com.groupe1.app_android.auth.UserPreferences
+import com.groupe1.app_android.auth.UserPreferencesSerializer
+import com.groupe1.app_android.auth.userPreferencesDataStore
+import kotlinx.coroutines.flow.first
 import com.groupe1.app_android.dtos.LoginUserDTO
 import com.groupe1.app_android.services.UserService
-import com.groupe1.app_android.session.UserStore
 import com.groupe1.app_android.ui.theme.defaultOutlinedTextFieldColors
+import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    onClickGoToHome: () -> Unit
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     var emailErrorEmpty by remember { mutableStateOf(false) }
     var passwordErrorEmpty by remember { mutableStateOf(false) }
     var connexionError by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope();
+    val context = LocalContext.current
 
     suspend fun loginPost() {
         val loginUser = LoginUserDTO(
@@ -39,7 +52,13 @@ fun LoginScreen() {
             password = password
         )
         val response = UserService.loginUser(loginUser)
-        UserStore.login(response.user)
+        context.userPreferencesDataStore.updateData {
+            UserPreferences(
+                currentUser = response.user,
+                accessToken = response.tokenPair.access,
+                refreshToken = response.tokenPair.refresh
+            )
+        }
     }
 
     Column(
@@ -101,9 +120,12 @@ fun LoginScreen() {
 
         Button(
             onClick= {
-                emailErrorEmpty = email.isBlank()
-                passwordErrorEmpty = password.isBlank()
-                loginPost()
+                scope.launch {
+                    emailErrorEmpty = email.isBlank()
+                    passwordErrorEmpty = password.isBlank()
+                    loginPost()
+                }
+                onClickGoToHome()
             },
             modifier = Modifier.fillMaxWidth()
         ) {
