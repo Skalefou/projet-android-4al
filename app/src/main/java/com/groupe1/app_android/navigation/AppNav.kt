@@ -56,8 +56,8 @@ fun AppNav(nav: NavHostController) {
             onClickGoToGate={ nav.navigate(Routes.GATE) }
         ) }
         composable(Routes.REGISTER) { RegisterScreen(
-            onClickGoToHome={ nav.navigate(Routes.HOME)
-            }
+            onClickGoToHome={ nav.navigate(Routes.HOME) },
+            onClickGoToGate={ nav.navigate(Routes.GATE) }
         ) }
 
         composable(Routes.HOME) {
