@@ -3,7 +3,6 @@ package com.groupe1.app_android.ui.main.components
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
-import com.groupe1.app_android.auth.UserPreferences
 import com.groupe1.app_android.auth.userPreferencesDataStore
 import com.groupe1.app_android.models.User
 import com.groupe1.app_android.navigation.Routes
@@ -29,7 +28,7 @@ fun RequireUser(
 
     LaunchedEffect(user) {
         if (user == null) {
-            navController.navigate(Routes.login) {
+            navController.navigate(Routes.LOGIN) {
                 popUpTo(0) { inclusive = true }
                 launchSingleTop = true
             }
