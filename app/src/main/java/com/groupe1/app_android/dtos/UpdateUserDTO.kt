@@ -1,10 +1,9 @@
-package com.groupe1.app_android.models
+package com.groupe1.app_android.dtos
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class User(
-    val id: Long = 0,
+data class UpdateUserDTO(
     val firstName: String = "",
     val lastName: String = "",
     val email: String = "",
@@ -14,8 +13,6 @@ data class User(
     val isHost: Boolean = false,
     val hostDescription: String = "",
     val languages: String = "",
-    val bio: String = "",
-    val ratingAverage: Double = 0.0,
-    val reviewsCount: Int = 0,
-    val verified: Boolean = false
+    val bio: String = ""
 )
+

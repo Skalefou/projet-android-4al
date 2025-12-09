@@ -3,6 +3,8 @@ package com.groupe1.app_android.ui.main
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +28,8 @@ fun HomeScreen(
         ) {
             FilterAdTriggerButton( placeholder = "Commencer ma recherche",
                 onClick = { onTriggerFilterAd() })
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             Text(
                 "Bonjour ${currentUser.firstName} !",
