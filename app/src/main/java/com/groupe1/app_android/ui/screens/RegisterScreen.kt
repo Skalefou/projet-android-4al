@@ -2,28 +2,34 @@ package com.groupe1.app_android.ui.screens
 
 import android.util.Patterns
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.groupe1.app_android.auth.UserPreferences
+import com.groupe1.app_android.auth.userPreferencesDataStore
 import com.groupe1.app_android.dtos.RegisterUserDTO
 import com.groupe1.app_android.services.UserService
-import com.groupe1.app_android.session.UserStore
-import com.groupe1.app_android.ui.theme.HoneyYellow
+import com.groupe1.app_android.ui.theme.defaultOutlinedTextFieldColors
 import kotlinx.coroutines.launch
 
 
 @Composable
 fun RegisterScreen(
-    onClickGoToHome: () -> Unit
+    onClickGoToHome: () -> Unit,
+    onClickGoToGate: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
 
@@ -41,130 +47,174 @@ fun RegisterScreen(
     var passwordMismatchError by remember { mutableStateOf(false) }
     var validEmailError by remember { mutableStateOf(false) }
     var validPasswordError by remember { mutableStateOf(false) }
+    var emailAlreadyUsedError by remember { mutableStateOf(false) }
 
-    val colorOutlinedTextField = OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = HoneyYellow,
-        unfocusedBorderColor = HoneyYellow,
-        errorBorderColor = Color.Red
-    )
+    val context = LocalContext.current
 
-    suspend fun registerPost() {
-        val registerUser = RegisterUserDTO(
-            firstName = firstName,
-            lastName = lastName,
-            email = email,
-            password = password
-        )
-        val user = UserService.registerUser(registerUser)
-        UserStore.login(user)
+    suspend fun registerPost(): Boolean {
+        return try {
+            val registerUser = RegisterUserDTO(
+                firstName = firstName,
+                lastName = lastName,
+                email = email,
+                password = password
+            )
+            val response = UserService.registerUser(registerUser)
+            context.userPreferencesDataStore.updateData {
+                UserPreferences(
+                    currentUser = response.user,
+                    accessToken = response.tokenPair.access,
+                    refreshToken = response.tokenPair.refresh
+                )
+            }
+            emailAlreadyUsedError = false
+            true
+        } catch (e: Exception) {
+            emailAlreadyUsedError = true
+            false
+        }
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .padding(24.dp)
     ) {
 
-        Text("Inscription", fontSize = 32.sp, modifier = Modifier.padding(bottom = 32.dp), fontWeight = FontWeight.Bold)
-        OutlinedTextField(
-            value = firstName,
-            onValueChange = { firstName = it; firstNameError = false },
-            label = { Text("Prénom") },
-            isError = firstNameError,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            colors = colorOutlinedTextField,
-            singleLine = true
+        IconButton(
+            onClick = { onClickGoToGate() },
+            modifier = Modifier.align(Alignment.Start)
         )
-        if (firstNameError) {
-            Text("Le prénom est requis", color = Color.Red, fontSize = 12.sp)
+        {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Retour"
+            )
         }
 
-        OutlinedTextField(
-            value = lastName,
-            onValueChange = { lastName = it; lastNameError = false },
-            label = { Text("Nom") },
-            isError = lastNameError,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            colors = colorOutlinedTextField,
-            singleLine = true
-        )
-        if (lastNameError) {
-            Text("Le nom est requis", color = Color.Red, fontSize = 12.sp)
-        }
-
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it; emailError = false },
-            label = { Text("Email") },
-            isError = emailError,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            colors = colorOutlinedTextField,
-            singleLine = true
-        )
-        if (emailError) {
-            Text("L'email est requis", color = Color.Red, fontSize = 12.sp)
-        }
-        if (validEmailError) {
-            Text("L'email n'est pas valide", color = Color.Red, fontSize = 12.sp)
-        }
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it; passwordError = false },
-            label = { Text("Mot de passe") },
-            visualTransformation = PasswordVisualTransformation(),
-            isError = passwordError,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            colors = colorOutlinedTextField,
-            singleLine = true
-        )
-        if (passwordError) {
-            Text("Le mot de passe est requis", color = Color.Red, fontSize = 12.sp)
-        }
-        if (validPasswordError) {
-            Text("Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre", color = Color.Red, fontSize = 12.sp)
-        }
-
-        OutlinedTextField(
-            value = confirmPassword,
-            onValueChange = { confirmPassword = it; confirmPasswordError = false },
-            label = { Text("Confirmation du mot de passe") },
-            visualTransformation = PasswordVisualTransformation(),
-            isError = confirmPasswordError,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-            colors = colorOutlinedTextField,
-            singleLine = true
-        )
-        if (confirmPasswordError) {
-            Text("La confirmation est requise", color = Color.Red, fontSize = 12.sp)
-        }
-        if (passwordMismatchError) {
-            Text("Les mots de passe ne correspondent pas", color = Color.Red, fontSize = 12.sp)
-        }
-
-        Button(
-            onClick = {
-                firstNameError = firstName.isBlank()
-                lastNameError = lastName.isBlank()
-                emailError = email.isBlank()
-                passwordError = password.isBlank()
-                confirmPasswordError = confirmPassword.isBlank()
-                passwordMismatchError = password != confirmPassword
-                validEmailError = !Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotBlank()
-                validPasswordError = !Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$").matches(password)  && password.isNotBlank()
-
-                if (!firstNameError && !lastNameError && !emailError && !passwordError && !confirmPasswordError && !passwordMismatchError && !validEmailError && !validPasswordError) {
-                    scope.launch {
-                        registerPost()
-                    }
-                    onClickGoToHome()
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Text("S'inscrire")
+
+            Text(
+                "Inscription",
+                fontSize = 32.sp,
+                modifier = Modifier.padding(bottom = 32.dp),
+                fontWeight = FontWeight.Bold
+            )
+            OutlinedTextField(
+                value = firstName,
+                onValueChange = { firstName = it; firstNameError = false },
+                label = { Text("Prénom") },
+                isError = firstNameError,
+                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                colors = defaultOutlinedTextFieldColors(),
+                singleLine = true
+            )
+            if (firstNameError) {
+                Text("Le prénom est requis", color = Color.Red, fontSize = 12.sp)
+            }
+
+            OutlinedTextField(
+                value = lastName,
+                onValueChange = { lastName = it; lastNameError = false },
+                label = { Text("Nom") },
+                isError = lastNameError,
+                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                colors = defaultOutlinedTextFieldColors(),
+                singleLine = true
+            )
+            if (lastNameError) {
+                Text("Le nom est requis", color = Color.Red, fontSize = 12.sp)
+            }
+
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it; emailError = false },
+                label = { Text("Email") },
+                isError = emailError,
+                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                colors = defaultOutlinedTextFieldColors(),
+                singleLine = true
+            )
+            if (emailError) {
+                Text("L'email est requis", color = Color.Red, fontSize = 12.sp)
+            }
+            if (validEmailError) {
+                Text("L'email n'est pas valide", color = Color.Red, fontSize = 12.sp)
+            }
+
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it; passwordError = false },
+                label = { Text("Mot de passe") },
+                visualTransformation = PasswordVisualTransformation(),
+                isError = passwordError,
+                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                colors = defaultOutlinedTextFieldColors(),
+                singleLine = true
+            )
+            if (passwordError) {
+                Text("Le mot de passe est requis", color = Color.Red, fontSize = 12.sp)
+            }
+            if (validPasswordError) {
+                Text(
+                    "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre",
+                    color = Color.Red,
+                    fontSize = 12.sp
+                )
+            }
+
+            OutlinedTextField(
+                value = confirmPassword,
+                onValueChange = { confirmPassword = it; confirmPasswordError = false },
+                label = { Text("Confirmation du mot de passe") },
+                visualTransformation = PasswordVisualTransformation(),
+                isError = confirmPasswordError,
+                modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                colors = defaultOutlinedTextFieldColors(),
+                singleLine = true
+            )
+            if (confirmPasswordError) {
+                Text("La confirmation est requise", color = Color.Red, fontSize = 12.sp)
+            }
+            if (passwordMismatchError) {
+                Text("Les mots de passe ne correspondent pas", color = Color.Red, fontSize = 12.sp)
+            }
+            if (emailAlreadyUsedError) {
+                Text("Cet email est déjà utilisé", color = Color.Red, fontSize = 12.sp)
+            }
+
+            Button(
+                onClick = {
+                    firstNameError = firstName.isBlank()
+                    lastNameError = lastName.isBlank()
+                    emailError = email.isBlank()
+                    passwordError = password.isBlank()
+                    confirmPasswordError = confirmPassword.isBlank()
+                    passwordMismatchError = password != confirmPassword
+                    validEmailError = !android.util.Patterns.EMAIL_ADDRESS.matcher(email)
+                        .matches() && email.isNotBlank()
+                    validPasswordError =
+                        !Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$").matches(password) && password.isNotBlank()
+
+                    if (!firstNameError && !lastNameError && !emailError && !passwordError && !confirmPasswordError && !passwordMismatchError && !validEmailError && !validPasswordError) {
+                        scope.launch {
+                            val success = registerPost()
+                            if (success) {
+                                onClickGoToHome()
+                            }
+                        }
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("S'inscrire")
+            }
         }
     }
 }

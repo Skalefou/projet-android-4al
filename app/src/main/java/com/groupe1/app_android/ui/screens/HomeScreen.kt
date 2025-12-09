@@ -12,18 +12,21 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.groupe1.app_android.domain.models.Listing
-import com.groupe1.app_android.ui.components.listing.ListingCard
+import com.groupe1.app_android.models.User
+import com.groupe1.app_android.ui.components.ListingCard
 import com.groupe1.app_android.ui.components.FilterAdTriggerButton
 import com.groupe1.app_android.viewModels.ListingsViewModel
 
 @Composable
 fun HomeScreen(
+    currentUser: User,
     listingsViewModel: ListingsViewModel,
     onTriggerFilterAd: () -> Unit,
     onItemClick: (Long) -> Unit
@@ -186,6 +189,9 @@ fun HomeScreen(
                 .windowInsetsPadding(WindowInsets.safeDrawing)
                 .padding(12.dp)
         ) {
+            Text(
+                "Bonjour ${currentUser.firstName} !",
+            )
             FilterAdTriggerButton(
                 placeholder = "Commencer ma recherche",
                 onClick = { onTriggerFilterAd() })
