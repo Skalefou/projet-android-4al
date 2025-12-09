@@ -31,9 +31,10 @@ fun HomeScreen(
     onTriggerFilterAd: () -> Unit,
     onItemClick: (Long) -> Unit
 ) {
+    // TODO: USE ME
     val remoteListings by listingsViewModel.remoteListings.collectAsState()
 
-    // Todo : remove
+    // Todo : remove, it's temporary
     val listings = listOf(
         Listing(
             id = 1L,

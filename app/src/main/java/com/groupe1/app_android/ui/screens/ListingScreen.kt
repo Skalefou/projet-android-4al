@@ -11,15 +11,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.outlined.AcUnit
+import androidx.compose.material.icons.outlined.LocalLaundryService
+import androidx.compose.material.icons.outlined.LocalParking
+import androidx.compose.material.icons.outlined.Tv
+import androidx.compose.material.icons.outlined.Wifi
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -33,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.groupe1.app_android.R
 import com.groupe1.app_android.domain.models.Listing
+import com.groupe1.app_android.ui.components.listing.ListingBenefit
 import com.groupe1.app_android.ui.components.shared.RoundIconButton
 
 @Composable
@@ -62,7 +73,7 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
         ownerName = "Alice"
     )
 
-    Column(modifier, verticalArrangement = Arrangement.spacedBy((-16).dp)) {
+    Column(modifier.fillMaxSize().verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy((-16).dp)) {
         Box {
             AsyncImage(
                 model = listing.firstImage,
@@ -101,9 +112,10 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
             ) {
                 Text(
                     listing.title,
+                    modifier = Modifier.fillMaxWidth(),
                     fontFamily = FontFamily(Font(R.font.montserrat_semibold)),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 38.sp,
+                    fontSize = 30.sp,
                     textAlign = TextAlign.Center
                 )
                 Text(
@@ -115,14 +127,62 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
                             listing.numberOfRooms + " chambres",
                     fontFamily = FontFamily(Font(R.font.montserrat_medium)),
                     color = Color.Gray,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    fontSize = 13.sp
                 )
-                HorizontalDivider()
+                HorizontalDivider(thickness = 0.5.dp)
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                    AsyncImage(
+                        model = "https://api.dicebear.com/9.x/lorelei/png?seed=${listing.ownerName}",
+                        contentDescription = "Owner avatar",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.size(48.dp)
+                    )
+                    Column(verticalArrangement = Arrangement.Center) {
+                        Text(
+                            listing.ownerName,
+                            fontFamily = FontFamily(Font(R.font.montserrat_medium)),
+                            textAlign = TextAlign.Center,
+                            fontSize = 14.sp
+                        )
+                        Text(
+                            "Hôte",
+                            fontFamily = FontFamily(Font(R.font.montserrat_medium)),
+                            textAlign = TextAlign.Center,
+                            color = Color.Gray,
+                            fontSize = 14.sp
+                        )
+                    }
+                }
+                HorizontalDivider(thickness = 0.5.dp)
                 Text(
                     listing.description,
                     fontFamily = FontFamily(Font(R.font.montserrat_regular)),
                     fontSize = 16.sp,
                 )
+                HorizontalDivider(thickness = 0.5.dp)
+                Text(
+                    "Ce que propose ce logement",
+                    modifier = Modifier.fillMaxWidth(),
+                    fontFamily = FontFamily(Font(R.font.montserrat_semibold)),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                )
+                if (listing.hasWifi) {
+                    ListingBenefit(Icons.Outlined.Wifi, "Wifi")
+                }
+                if (listing.hasWashingMachine) {
+                    ListingBenefit(Icons.Outlined.LocalLaundryService, "Machine à laver")
+                }
+                if (listing.hasAirConditioning) {
+                    ListingBenefit(Icons.Outlined.AcUnit, "Climatisation")
+                }
+                if (listing.hasTv) {
+                    ListingBenefit(Icons.Outlined.Tv, "Télévision")
+                }
+                if (listing.hasParking) {
+                    ListingBenefit(Icons.Outlined.LocalParking, "Parking")
+                }
             }
         }
     }
