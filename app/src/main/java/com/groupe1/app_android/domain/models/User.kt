@@ -1,4 +1,4 @@
-package com.groupe1.app_android.models
+package com.groupe1.app_android.domain.models
 
 import kotlinx.serialization.Serializable
 

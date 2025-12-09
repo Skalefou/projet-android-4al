@@ -19,7 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.groupe1.app_android.domain.models.Listing
-import com.groupe1.app_android.models.User
+import com.groupe1.app_android.domain.models.User
 import com.groupe1.app_android.ui.components.FilterAdTriggerButton
 import com.groupe1.app_android.ui.components.listing.ListingCard
 import com.groupe1.app_android.viewModels.ListingsViewModel

@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalContext
 import com.groupe1.app_android.auth.UserPreferences
 import com.groupe1.app_android.auth.userPreferencesDataStore
+import com.groupe1.app_android.data.remote.UserRemoteDataSource
 import com.groupe1.app_android.dtos.LoginUserDTO
-import com.groupe1.app_android.services.UserService
 import com.groupe1.app_android.ui.theme.defaultOutlinedTextFieldColors
 import kotlinx.coroutines.launch
 
@@ -54,7 +54,7 @@ fun LoginScreen(
                 email = email,
                 password = password
             )
-            val response = UserService.loginUser(loginUser)
+            val response = UserRemoteDataSource.loginUser(loginUser)
             context.userPreferencesDataStore.updateData {
                 UserPreferences(
                     currentUser = response.user,

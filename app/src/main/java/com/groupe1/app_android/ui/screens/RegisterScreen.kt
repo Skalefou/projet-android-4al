@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.groupe1.app_android.auth.UserPreferences
 import com.groupe1.app_android.auth.userPreferencesDataStore
-import com.groupe1.app_android.dtos.RegisterUserDTO
-import com.groupe1.app_android.services.UserService
+import com.groupe1.app_android.data.remote.UserRemoteDataSource
+import com.groupe1.app_android.data.remote.models.RegisterUserDTO
 import com.groupe1.app_android.ui.theme.defaultOutlinedTextFieldColors
 import kotlinx.coroutines.launch
 
@@ -59,7 +59,7 @@ fun RegisterScreen(
                 email = email,
                 password = password
             )
-            val response = UserService.registerUser(registerUser)
+            val response = UserRemoteDataSource.registerUser(registerUser)
             context.userPreferencesDataStore.updateData {
                 UserPreferences(
                     currentUser = response.user,
