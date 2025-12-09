@@ -3,7 +3,6 @@ package com.groupe1.app_android.ui.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.groupe1.app_android.dtos.UpdateUserDTO
-import com.groupe1.app_android.models.User
 import com.groupe1.app_android.networks.NetworkModule
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

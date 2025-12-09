@@ -1,6 +1,6 @@
 package com.groupe1.app_android.preview
 
-import com.groupe1.app_android.models.User
+import com.groupe1.app_android.domain.models.User
 
 object PreviewUser {
     val Default = User(

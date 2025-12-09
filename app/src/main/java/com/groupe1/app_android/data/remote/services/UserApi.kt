@@ -1,19 +1,18 @@
-package com.groupe1.app_android.api
+package com.groupe1.app_android.data.remote.services
 
+import com.groupe1.app_android.data.remote.models.RegisterUserDTO
+import com.groupe1.app_android.domain.models.User
 import com.groupe1.app_android.dtos.AuthResponseDTO
 import com.groupe1.app_android.dtos.LoginUserDTO
-import com.groupe1.app_android.dtos.RegisterUserDTO
 import com.groupe1.app_android.dtos.UpdateUserDTO
-import com.groupe1.app_android.models.User
-
-import retrofit2.http.Body;
-import retrofit2.http.POST;
+import retrofit2.http.Body
+import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface UserApi {
     @POST("/api/users/register")
-    suspend fun register(@Body body: RegisterUserDTO): AuthResponseDTO
+    suspend fun register(@Body body: RegisterUserDTO): User
 
     @POST("/api/users/login")
     suspend fun login(@Body body: LoginUserDTO): AuthResponseDTO

@@ -1,4 +1,4 @@
-package com.groupe1.app_android.dtos
+package com.groupe1.app_android.data.remote.models
 
 import kotlinx.serialization.Serializable
 

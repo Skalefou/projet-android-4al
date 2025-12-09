@@ -17,8 +17,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.groupe1.app_android.domain.models.User
 import com.groupe1.app_android.dtos.UpdateUserDTO
-import com.groupe1.app_android.models.User
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
