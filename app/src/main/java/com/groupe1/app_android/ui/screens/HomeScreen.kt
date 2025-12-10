@@ -189,9 +189,6 @@ fun HomeScreen(
                 .windowInsetsPadding(WindowInsets.safeDrawing)
                 .padding(12.dp)
         ) {
-            Text(
-                "Bonjour ${currentUser.firstName} !",
-            )
             FilterAdTriggerButton(
                 placeholder = "Commencer ma recherche",
                 onClick = { onTriggerFilterAd() })
