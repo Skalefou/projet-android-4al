@@ -30,6 +30,7 @@ import com.groupe1.app_android.ui.main.TripsScreen
 import com.groupe1.app_android.ui.main.WishlistScreen
 import com.groupe1.app_android.ui.main.components.RequireUser
 import com.groupe1.app_android.ui.profile.ProfileRoute
+import com.groupe1.app_android.ui.screens.CreateProposalScreen
 import com.groupe1.app_android.ui.screens.HomeScreen
 import com.groupe1.app_android.ui.screens.LoginRegisterGateScreen
 import com.groupe1.app_android.ui.screens.LoginScreen
@@ -54,6 +55,7 @@ object Routes {
     const val WISHLIST = "wishlist"
     const val TRIPS = "trips"
     const val INBOX = "inbox"
+    const val CREATE_PROPOSAL = "createProposal"
 }
 
 @Composable
@@ -116,7 +118,7 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
             composable(Routes.REGISTER) {
                 RegisterScreen(
                     onClickGoToHome = { nav.navigate(Routes.HOME) },
-                    onClickGoToGate = { nav.navigate(Routes.GATE) }
+                    onClickGoToGate = { nav.navigate(Routes.GATE) },
                 )
             }
 
@@ -128,7 +130,9 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
                         onTriggerFilterAd = { nav.navigate(Routes.FILTER_LISTING) },
                         onItemClick = { listingId ->
                             nav.navigate("listing/$listingId")
-                        })
+                        },
+                        onClickGoToCreateProposal = { nav.navigate(Routes.CREATE_PROPOSAL)}
+                    )
                 }
             }
             composable(Routes.FILTER_LISTING) {
@@ -167,6 +171,14 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
                     modifier = Modifier.background(Color.Gray),
                     listingId = listingId,
                     onBackClick = { nav.popBackStack() })
+            }
+            composable(Routes.CREATE_PROPOSAL) {
+                RequireUser(nav) { user ->
+                    CreateProposalScreen(
+                        currentUser = user,
+                        onBackClick = { nav.popBackStack() }
+                    )
+                }
             }
         }
     }

@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.groupe1.app_android.domain.models.Listing
 import com.groupe1.app_android.domain.models.User
+import com.groupe1.app_android.ui.components.AddProposalButton
 import com.groupe1.app_android.ui.components.FilterAdTriggerButton
 import com.groupe1.app_android.ui.components.listing.ListingCard
 import com.groupe1.app_android.viewModels.ListingsViewModel
@@ -29,7 +30,8 @@ fun HomeScreen(
     currentUser: User,
     listingsViewModel: ListingsViewModel,
     onTriggerFilterAd: () -> Unit,
-    onItemClick: (Long) -> Unit
+    onItemClick: (Long) -> Unit,
+    onClickGoToCreateProposal: () -> Unit
 ) {
     // TODO: USE ME
     val remoteListings by listingsViewModel.remoteListings.collectAsState()
@@ -204,5 +206,8 @@ fun HomeScreen(
                 }
             }
         }
+        AddProposalButton(
+            onClick = { onClickGoToCreateProposal() }
+        )
     }
 }

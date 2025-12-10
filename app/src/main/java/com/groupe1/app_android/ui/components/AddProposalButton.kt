@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.groupe1.app_android.ui.theme.HoneyYellow
 
 @Composable()
 fun AddProposalButton(onClick: () -> Unit) {
@@ -21,7 +22,7 @@ fun AddProposalButton(onClick: () -> Unit) {
     ) {
         FloatingActionButton(
             onClick = onClick,
-            containerColor = Color.Green,
+            containerColor = HoneyYellow,
             contentColor = Color.White,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
