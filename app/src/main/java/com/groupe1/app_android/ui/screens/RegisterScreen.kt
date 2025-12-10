@@ -22,6 +22,7 @@ import com.groupe1.app_android.auth.UserPreferences
 import com.groupe1.app_android.auth.userPreferencesDataStore
 import com.groupe1.app_android.data.remote.UserRemoteDataSource
 import com.groupe1.app_android.data.remote.models.RegisterUserDTO
+import com.groupe1.app_android.ui.components.BackButton
 import com.groupe1.app_android.ui.theme.defaultOutlinedTextFieldColors
 import kotlinx.coroutines.launch
 
@@ -81,16 +82,10 @@ fun RegisterScreen(
             .padding(24.dp)
     ) {
 
-        IconButton(
-            onClick = { onClickGoToGate() },
-            modifier = Modifier.align(Alignment.Start)
+        BackButton(
+            modifier = Modifier.align(Alignment.Start),
+            onClick = { onClickGoToGate() }
         )
-        {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Retour"
-            )
-        }
 
         Column(
             modifier = Modifier
