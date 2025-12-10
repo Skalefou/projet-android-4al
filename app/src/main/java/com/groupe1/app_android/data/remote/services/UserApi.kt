@@ -12,7 +12,7 @@ import retrofit2.http.Path
 
 interface UserApi {
     @POST("/api/users/register")
-    suspend fun register(@Body body: RegisterUserDTO): User
+    suspend fun register(@Body body: RegisterUserDTO): AuthResponseDTO
 
     @POST("/api/users/login")
     suspend fun login(@Body body: LoginUserDTO): AuthResponseDTO

@@ -27,7 +27,7 @@ object UserRemoteDataSource {
             throw IllegalArgumentException("Le mot de passe doit faire au moins 8 caractères avec minuscule, majuscule et chiffre.")
         }
 
-        return UserRemoteDataSource.registerUser(registerUser)
+        return userApi.register(registerUser)
     }
 
     suspend fun loginUser(loginUser : LoginUserDTO): AuthResponseDTO {
