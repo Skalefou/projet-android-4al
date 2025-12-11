@@ -71,7 +71,7 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
         secondImage = "https://cf.bstatic.com/xdata/images/hotel/max1024x768/120251269.jpg?k=638701338fd3475774a6d0e01848f44d44a450b162680bd7d9e7207e5aeb2871&o=",
         thirdImage = "https://cf.bstatic.com/xdata/images/hotel/max1024x768/120251269.jpg?k=638701338fd3475774a6d0e01848f44d44a450b162680bd7d9e7207e5aeb2871&o=",
         priceByNight = 120,
-        ownerId = 10,
+        ownerId = 2,
         ownerName = "Alice"
     )
 

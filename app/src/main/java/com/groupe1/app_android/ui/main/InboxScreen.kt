@@ -7,6 +7,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,7 +29,15 @@ fun InboxScreen(
 ) {
     val conversations by viewModel.conversations.collectAsStateWithLifecycle()
     val loading by viewModel.loading.collectAsStateWithLifecycle()
+    val error by chatViewModel.error.collectAsStateWithLifecycle()
+    val context = androidx.compose.ui.platform.LocalContext.current
     var showCreateDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(error) {
+        error?.let {
+            android.widget.Toast.makeText(context, it, android.widget.Toast.LENGTH_LONG).show()
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.loadConversations()
@@ -66,11 +76,16 @@ fun InboxScreen(
             onDismissRequest = { showCreateDialog = false },
             title = { Text("Nouvelle conversation") },
             text = {
-                OutlinedTextField(
-                    value = otherUserIdText,
-                    onValueChange = { otherUserIdText = it },
-                    label = { Text("ID de l'utilisateur") }
-                )
+                Column {
+                    OutlinedTextField(
+                        value = otherUserIdText,
+                        onValueChange = { otherUserIdText = it },
+                        label = { Text("ID de l'utilisateur") },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        isError = otherUserIdText.isNotEmpty() && otherUserIdText.toLongOrNull() == null,
+                        supportingText = { if (otherUserIdText.isNotEmpty() && otherUserIdText.toLongOrNull() == null) Text("Entrez un nombre valid") }
+                    )
+                }
             },
             confirmButton = {
                 Button(onClick = {

@@ -11,6 +11,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -69,6 +71,13 @@ fun AppNav(
     val prefsState by context.userPreferencesDataStore
         .data
         .collectAsState(initial = null as UserPreferences?)
+
+    val chatError by chatViewModel.error.collectAsStateWithLifecycle()
+    LaunchedEffect(chatError) {
+        chatError?.let {
+            android.widget.Toast.makeText(context, it, android.widget.Toast.LENGTH_LONG).show()
+        }
+    }
 
     val prefs = prefsState ?: return
 

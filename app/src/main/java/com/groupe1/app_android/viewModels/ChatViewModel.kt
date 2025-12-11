@@ -18,6 +18,9 @@ class ChatViewModel(
     private val _loading = MutableStateFlow(false)
     val loading = _loading.asStateFlow()
 
+    private val _error = MutableStateFlow<String?>(null)
+    val error = _error.asStateFlow()
+
     fun loadMessages(conversationId: Long) {
         viewModelScope.launch {
             _loading.value = true
@@ -68,7 +71,8 @@ class ChatViewModel(
                val conv = chatUseCases.createConversation(otherUserId)
                onCreated(conv.id)
             } catch (e: Exception) {
-                // handle
+                android.util.Log.e("ChatViewModel", "Error creating conversation", e)
+                _error.value = "Erreur création: ${e.message}"
             }
         }
     }
