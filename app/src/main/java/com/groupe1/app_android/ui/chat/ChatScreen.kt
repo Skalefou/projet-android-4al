@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,10 +20,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.groupe1.app_android.domain.models.Message
 import com.groupe1.app_android.viewModels.ChatViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
     viewModel: ChatViewModel,
-    conversationId: Long
+    conversationId: Long,
+    onBack: () -> Unit,
+    initialMessage: String? = null
 ) {
     LaunchedEffect(conversationId) {
         viewModel.loadMessages(conversationId)
@@ -30,7 +34,7 @@ fun ChatScreen(
 
     val messages by viewModel.messages.collectAsStateWithLifecycle()
     val loading by viewModel.loading.collectAsStateWithLifecycle()
-    var inputText by remember { mutableStateOf("") }
+    var inputText by remember { mutableStateOf(initialMessage ?: "") }
     var selectedMessageId by remember { mutableStateOf<Long?>(null) }
     var showReactionDialog by remember { mutableStateOf(false) }
 
@@ -44,7 +48,19 @@ fun ChatScreen(
         )
     }
 
-    Column(Modifier.fillMaxSize()) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Conversation") },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
+                    }
+                }
+            )
+        }
+    ) { padding ->
+        Column(Modifier.padding(padding).fillMaxSize()) {
         if (loading) {
             LinearProgressIndicator(Modifier.fillMaxWidth())
         }
@@ -56,7 +72,7 @@ fun ChatScreen(
             items(messages.reversed()) { msg ->
                 MessageItem(
                     message = msg,
-                    isMe = msg.senderId == 1L, // TODO: Get current user ID dynamically
+                    isMe = msg.senderId == 1L,
                     onLongClick = {
                         selectedMessageId = msg.id
                         showReactionDialog = true
@@ -86,6 +102,7 @@ fun ChatScreen(
             }
         }
     }
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -107,8 +124,11 @@ fun MessageItem(message: Message, isMe: Boolean, onLongClick: () -> Unit) {
         }
         if (message.reactions.isNotEmpty()) {
             Row {
-                message.reactions.forEach { (reaction, count) ->
-                    Text("$reaction $count", style = MaterialTheme.typography.labelSmall)
+                message.reactions.forEach { (reaction, userIds) ->
+                    val count = userIds.size
+                    val isReactedByMe = userIds.contains(1L)
+                    val style = if (isReactedByMe) MaterialTheme.typography.labelLarge else MaterialTheme.typography.labelSmall
+                    Text("$reaction $count", style = style, modifier = Modifier.padding(end = 4.dp))
                 }
             }
         }

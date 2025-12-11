@@ -27,7 +27,6 @@ class ChatViewModel(
             try {
                 _messages.value = chatUseCases.getMessages(conversationId)
             } catch (e: Exception) {
-                // handle error
             } finally {
                 _loading.value = false
             }
@@ -40,7 +39,6 @@ class ChatViewModel(
                 val msg = chatUseCases.sendMessage(conversationId, content)
                 _messages.value = _messages.value + msg
             } catch (e: Exception) {
-                // handle error
             }
         }
     }
@@ -49,18 +47,30 @@ class ChatViewModel(
         viewModelScope.launch {
              try {
                  chatUseCases.reactToMessage(messageId, reaction)
-                 // Optimistic update or refresh?
-                 // Simple refresh for now or optimistic update:
                  val updatedList = _messages.value.map { msg ->
                      if (msg.id == messageId) {
-                         val newReactions = msg.reactions.toMutableMap()
-                         newReactions[reaction] = (newReactions[reaction] ?: 0) + 1
-                         msg.copy(reactions = newReactions)
+                         val currentReactions = msg.reactions.toMutableMap()
+                         val userIds = currentReactions[reaction]?.toMutableList() ?: mutableListOf()
+                         
+                         val myId = 1L // Mock My ID
+                         
+                         if (userIds.contains(myId)) {
+                            userIds.remove(myId)
+                            if (userIds.isEmpty()) {
+                                currentReactions.remove(reaction)
+                            } else {
+                                currentReactions[reaction] = userIds
+                            }
+                         } else {
+                             userIds.add(myId)
+                             currentReactions[reaction] = userIds
+                         }
+                         
+                         msg.copy(reactions = currentReactions)
                      } else msg
                  }
                  _messages.value = updatedList
              } catch(e: Exception) {
-                 // handle
              }
         }
     }

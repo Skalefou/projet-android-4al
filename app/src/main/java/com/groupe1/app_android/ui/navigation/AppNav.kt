@@ -166,14 +166,21 @@ fun AppNav(
                 )
             }
             composable(
-                route = Routes.CHAT,
-                arguments = listOf(navArgument("conversationId") { type = NavType.LongType })
+                route = "chat/{conversationId}?initialMessage={initialMessage}",
+                arguments = listOf(
+                    navArgument("conversationId") { type = NavType.LongType },
+                    navArgument("initialMessage") { type = NavType.StringType; nullable = true }
+                )
             ) { backStackEntry ->
                 val conversationId = backStackEntry.arguments?.getLong("conversationId")
                     ?: error("conversationId missing")
+                val initialMessage = backStackEntry.arguments?.getString("initialMessage")
+                
                 com.groupe1.app_android.ui.chat.ChatScreen(
                     viewModel = chatViewModel,
-                    conversationId = conversationId
+                    conversationId = conversationId,
+                    onBack = { nav.popBackStack() },
+                    initialMessage = initialMessage
                 )
             }
             composable(Routes.PROFILE) {
@@ -197,10 +204,10 @@ fun AppNav(
                     modifier = Modifier.background(Color.Gray),
                     listingId = listingId,
                     onBackClick = { nav.popBackStack() },
-                    onContactClick = { ownerId ->
-                        // Create conversation or get existing, then navigate
+                    onContactClick = { ownerId, listingName ->
                         chatViewModel.createConversation(ownerId) { conversationId ->
-                            nav.navigate("chat/$conversationId")
+                            val message = "Bonjour, j'ai besoin d'info concernant votre location $listingName"
+                            nav.navigate("chat/$conversationId?initialMessage=$message")
                         }
                     }
                 )

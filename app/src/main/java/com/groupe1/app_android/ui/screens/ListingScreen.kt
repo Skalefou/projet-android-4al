@@ -49,7 +49,7 @@ import com.groupe1.app_android.ui.components.listing.ListingBenefit
 import com.groupe1.app_android.ui.components.shared.RoundIconButton
 
 @Composable
-fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: () -> Unit, onContactClick: (Long) -> Unit) {
+fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: () -> Unit, onContactClick: (Long, String) -> Unit) {
     val listing = Listing(
         id = 1L,
         title = "Charming Cottage",
@@ -156,7 +156,7 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
                         )
                     }
                     Spacer(Modifier.weight(1f))
-                    Button(onClick = { onContactClick(listing.ownerId) }) {
+                    Button(onClick = { onContactClick(listing.ownerId, listing.title) }) {
                         Text("Contacter")
                     }
                 }
@@ -197,5 +197,5 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
 @Preview
 @Composable
 fun ListingScreenPreview() {
-    ListingScreen(Modifier, 1L, onBackClick = {}, onContactClick = {})
+    ListingScreen(Modifier, 1L, onBackClick = {}, onContactClick = { _, _ -> })
 }

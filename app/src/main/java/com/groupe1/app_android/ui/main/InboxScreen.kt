@@ -21,10 +21,7 @@ import com.groupe1.app_android.viewModels.ChatViewModel
 @Composable
 fun InboxScreen(
     viewModel: InboxViewModel,
-    chatViewModel: ChatViewModel, // Need separate view model or just callback? Passed for creating conv. Or use Callback.
-    // Better to use callback for navigation, but for creating conv?
-    // Let's assume we navigate to ChatScreen with a new ID or existing one.
-    // But createConversation returns an ID.
+    chatViewModel: ChatViewModel,
     onNavigateToChat: (Long) -> Unit
 ) {
     val conversations by viewModel.conversations.collectAsStateWithLifecycle()

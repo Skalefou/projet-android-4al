@@ -5,5 +5,5 @@ data class Message(
     val content: String,
     val senderId: Long,
     val timestamp: Long,
-    val reactions: Map<String, Int> = emptyMap() // e.g. "❤️" -> 2
+    val reactions: Map<String, List<Long>> = emptyMap() // e.g. "❤️" -> [1, 2]
 )

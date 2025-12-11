@@ -15,7 +15,7 @@ data class MessageDTO(
     @SerializedName("content") val content: String,
     @SerializedName("sender_id") val senderId: Long,
     @SerializedName("timestamp") val timestamp: Long,
-    @SerializedName("reactions") val reactions: Map<String, Int> = emptyMap()
+    @SerializedName("reactions") val reactions: Map<String, List<Long>> = emptyMap()
 )
 
 data class CreateConversationRequest(
