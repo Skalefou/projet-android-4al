@@ -98,7 +98,6 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
         }
     ) { innerPadding ->
         NavHost(
-            modifier = Modifier.padding(innerPadding),
             navController = nav,
             startDestination = if (hasValidRefresh) Routes.HOME else Routes.GATE
         ) {
@@ -123,6 +122,7 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
             composable(Routes.HOME) {
                 RequireUser(nav) { user ->
                     HomeScreen(
+                        modifier = Modifier.padding(innerPadding),
                         currentUser = user,
                         listingsViewModel,
                         onTriggerFilterAd = { nav.navigate(Routes.FILTER_LISTING) },
@@ -164,7 +164,7 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
                 val listingId = backStackEntry.arguments?.getLong("listingId")
                     ?: error("listingId missing in navigation")
                 ListingScreen(
-                    modifier = Modifier.background(Color.Gray),
+                    modifier = Modifier.background(Color.White),
                     listingId = listingId,
                     onBackClick = { nav.popBackStack() })
             }

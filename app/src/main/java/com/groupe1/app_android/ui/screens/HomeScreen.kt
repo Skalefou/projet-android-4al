@@ -26,6 +26,7 @@ import com.groupe1.app_android.viewModels.ListingsViewModel
 
 @Composable
 fun HomeScreen(
+    modifier: Modifier = Modifier,
     currentUser: User,
     listingsViewModel: ListingsViewModel,
     onTriggerFilterAd: () -> Unit,
@@ -184,7 +185,7 @@ fun HomeScreen(
 
     Surface {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .windowInsetsPadding(WindowInsets.safeDrawing)
                 .padding(12.dp)
