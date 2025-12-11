@@ -21,6 +21,18 @@ class MainActivity : ComponentActivity() {
     )
     private val listingsViewModel = ListingsViewModel(listingUseCases)
 
+    // Chat
+    private val chatRepository = com.groupe1.app_android.data.repository.ChatRepositoryImpl()
+    private val chatUseCases = com.groupe1.app_android.domain.usecase.chat.ChatUseCases(
+        com.groupe1.app_android.domain.usecase.chat.GetConversationsUseCase(chatRepository),
+        com.groupe1.app_android.domain.usecase.chat.GetMessagesUseCase(chatRepository),
+        com.groupe1.app_android.domain.usecase.chat.SendMessageUseCase(chatRepository),
+        com.groupe1.app_android.domain.usecase.chat.CreateConversationUseCase(chatRepository),
+        com.groupe1.app_android.domain.usecase.chat.ReactToMessageUseCase(chatRepository)
+    )
+    private val inboxViewModel = com.groupe1.app_android.viewModels.InboxViewModel(chatUseCases)
+    private val chatViewModel = com.groupe1.app_android.viewModels.ChatViewModel(chatUseCases)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,7 +42,9 @@ class MainActivity : ComponentActivity() {
                     val nav = rememberNavController()
                     AppNav(
                         nav,
-                        listingsViewModel = listingsViewModel
+                        listingsViewModel = listingsViewModel,
+                        inboxViewModel = inboxViewModel,
+                        chatViewModel = chatViewModel
                     )
                 }
             }

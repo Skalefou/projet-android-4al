@@ -54,10 +54,16 @@ object Routes {
     const val WISHLIST = "wishlist"
     const val TRIPS = "trips"
     const val INBOX = "inbox"
+    const val CHAT = "chat/{conversationId}"
 }
 
 @Composable
-fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
+fun AppNav(
+    nav: NavHostController, 
+    listingsViewModel: ListingsViewModel,
+    inboxViewModel: com.groupe1.app_android.viewModels.InboxViewModel,
+    chatViewModel: com.groupe1.app_android.viewModels.ChatViewModel
+) {
     val context = LocalContext.current
 
     val prefsState by context.userPreferencesDataStore
@@ -144,7 +150,22 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
                 TripsScreen()
             }
             composable(Routes.INBOX) {
-                InboxScreen()
+                InboxScreen(
+                    viewModel = inboxViewModel,
+                    chatViewModel = chatViewModel,
+                    onNavigateToChat = { id -> nav.navigate("chat/$id") }
+                )
+            }
+            composable(
+                route = Routes.CHAT,
+                arguments = listOf(navArgument("conversationId") { type = NavType.LongType })
+            ) { backStackEntry ->
+                val conversationId = backStackEntry.arguments?.getLong("conversationId")
+                    ?: error("conversationId missing")
+                com.groupe1.app_android.ui.chat.ChatScreen(
+                    viewModel = chatViewModel,
+                    conversationId = conversationId
+                )
             }
             composable(Routes.PROFILE) {
                 ProfileRoute(nav = nav)
@@ -166,7 +187,14 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
                 ListingScreen(
                     modifier = Modifier.background(Color.Gray),
                     listingId = listingId,
-                    onBackClick = { nav.popBackStack() })
+                    onBackClick = { nav.popBackStack() },
+                    onContactClick = { ownerId ->
+                        // Create conversation or get existing, then navigate
+                        chatViewModel.createConversation(ownerId) { conversationId ->
+                            nav.navigate("chat/$conversationId")
+                        }
+                    }
+                )
             }
         }
     }

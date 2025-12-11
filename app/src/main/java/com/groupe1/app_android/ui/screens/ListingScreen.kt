@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,6 +25,7 @@ import androidx.compose.material.icons.outlined.LocalLaundryService
 import androidx.compose.material.icons.outlined.LocalParking
 import androidx.compose.material.icons.outlined.Tv
 import androidx.compose.material.icons.outlined.Wifi
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -47,7 +49,7 @@ import com.groupe1.app_android.ui.components.listing.ListingBenefit
 import com.groupe1.app_android.ui.components.shared.RoundIconButton
 
 @Composable
-fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: () -> Unit) {
+fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: () -> Unit, onContactClick: (Long) -> Unit) {
     val listing = Listing(
         id = 1L,
         title = "Charming Cottage",
@@ -153,6 +155,10 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
                             fontSize = 14.sp
                         )
                     }
+                    Spacer(Modifier.weight(1f))
+                    Button(onClick = { onContactClick(listing.ownerId) }) {
+                        Text("Contacter")
+                    }
                 }
                 HorizontalDivider(thickness = 0.5.dp)
                 Text(
@@ -191,5 +197,5 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
 @Preview
 @Composable
 fun ListingScreenPreview() {
-    ListingScreen(Modifier, 1L, onBackClick = {})
+    ListingScreen(Modifier, 1L, onBackClick = {}, onContactClick = {})
 }
