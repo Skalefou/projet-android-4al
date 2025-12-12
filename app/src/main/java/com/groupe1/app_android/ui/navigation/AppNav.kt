@@ -28,7 +28,7 @@ import com.groupe1.app_android.ui.main.InboxScreen
 import com.groupe1.app_android.ui.main.MapScreen
 import com.groupe1.app_android.ui.main.TripsScreen
 import com.groupe1.app_android.ui.main.WishlistScreen
-import com.groupe1.app_android.ui.main.components.RequireUser
+import com.groupe1.app_android.ui.components.RequireUser
 import com.groupe1.app_android.ui.profile.ProfileRoute
 import com.groupe1.app_android.ui.screens.CreateProposalScreen
 import com.groupe1.app_android.ui.screens.HomeScreen
