@@ -12,4 +12,5 @@ open class ListingRemoteDataSource(
 
     open suspend fun fetchListings() = listingService.getAllListings().map { mapListingDtoToListing(it) }
     open suspend fun fetchListingById(id: Long) = mapListingDtoToListing(listingService.getListingById(id))
+    open suspend fun fetchFilteredListings(criteriaMap: Map<String, String>) = listingService.getFilteredListings(criteriaMap).map { mapListingDtoToListing(it) }
 }

@@ -11,9 +11,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -35,8 +37,13 @@ import com.groupe1.app_android.ui.screens.LoginRegisterGateScreen
 import com.groupe1.app_android.ui.screens.LoginScreen
 import com.groupe1.app_android.ui.screens.RegisterScreen
 import com.groupe1.app_android.ui.screens.ListingScreen
+import com.groupe1.app_android.ui.screens.filterListing.FilterHousePropertyScreen
+import com.groupe1.app_android.ui.screens.filterListing.FilterNumberOfTravellersScreen
+import com.groupe1.app_android.ui.screens.filterListing.FilterResultsScreen
+import com.groupe1.app_android.ui.screens.filterListing.FilterWhenScreen
 import com.groupe1.app_android.ui.screens.filterListing.FilterWhereScreen
 import com.groupe1.app_android.ui.settings.SettingsScreen
+import com.groupe1.app_android.viewModels.FiltersViewModel
 import com.groupe1.app_android.viewModels.ListingsViewModel
 
 
@@ -54,10 +61,15 @@ object Routes {
     const val WISHLIST = "wishlist"
     const val TRIPS = "trips"
     const val INBOX = "inbox"
+
+    const val FILTER_WHEN = "filter_when"
+    const val FILTER_TRAVELLERS = "filter_travellers"
+    const val FILTER_RESULTS = "filter_results"
+    const val FILTER_TYPE = "filter_type"
 }
 
 @Composable
-fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
+fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel, filtersViewModel: FiltersViewModel) {
     val context = LocalContext.current
 
     val prefsState by context.userPreferencesDataStore
@@ -131,9 +143,6 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
                         })
                 }
             }
-            composable(Routes.FILTER_LISTING) {
-                FilterWhereScreen()
-            }
             composable(Routes.MAP) {
                 MapScreen()
             }
@@ -166,8 +175,59 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel) {
                 ListingScreen(
                     modifier = Modifier.background(Color.White),
                     listingId = listingId,
-                    onBackClick = { nav.popBackStack() })
+                    onBackClick = { nav.popBackStack() }
+                )
             }
+
+            // Routes for filtering listings screens
+            // Entry point: FILTER_LISTING -> FilterWhereScreen
+            composable(Routes.FILTER_LISTING) {
+                FilterWhereScreen(
+                    viewModel = filtersViewModel,
+                    onNext = { nav.navigate(Routes.FILTER_WHEN) },
+                    onQuit = { nav.navigate(Routes.HOME) }
+                )
+            }
+
+            composable(Routes.FILTER_WHEN) {
+                FilterWhenScreen(
+                    viewModel = filtersViewModel,
+                    onNext = { nav.navigate(Routes.FILTER_TRAVELLERS) },
+                    onBack = { nav.popBackStack() },
+                    onQuit = { nav.navigate(Routes.HOME) }
+                )
+            }
+
+            composable(Routes.FILTER_TRAVELLERS) {
+                FilterNumberOfTravellersScreen (
+                    viewModel = filtersViewModel,
+                    onNext = { nav.navigate(Routes.FILTER_TYPE) },
+                    onBack = { nav.popBackStack() },
+                    onQuit = { nav.navigate(Routes.HOME) }
+                )
+            }
+
+            composable(Routes.FILTER_TYPE) {
+                FilterHousePropertyScreen(
+                    viewModel = filtersViewModel,
+                    onNext = { nav.navigate(Routes.FILTER_RESULTS) },
+                    onBack = { nav.popBackStack() },
+                    onQuit = { nav.navigate(Routes.HOME) }
+                )
+            }
+
+            composable(Routes.FILTER_RESULTS) {
+                FilterResultsScreen(
+                    viewModel = filtersViewModel,
+                    onListingClick = { listing -> nav.navigate("listing/${listing.id}") },
+                    onBack = { nav.popBackStack() },
+                    onEditFilter = { nav.navigate(Routes.FILTER_LISTING) {
+                        popUpTo(Routes.FILTER_LISTING) { inclusive = false }
+                        launchSingleTop = true
+                    } }
+                )
+            }
+
         }
     }
 }
