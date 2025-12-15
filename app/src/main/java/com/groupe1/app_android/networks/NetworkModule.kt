@@ -50,7 +50,7 @@ object NetworkModule {
 
     val userApi: UserApi by lazy { retrofit.create(UserApi::class.java) }
 
-    val searchBarCityApi = Retrofit.Builder()
+    val searchBarCityApi : Retrofit = Retrofit.Builder()
         .baseUrl("https://api.mapbox.com/")
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .build()
