@@ -4,7 +4,7 @@ import com.groupe1.app_android.data.remote.models.GeocodingResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface FilterListingService {
+interface SearchCityService {
     @GET("search/geocode/v6/forward")
     suspend fun searchCities(
         @Query("q") query: String,
