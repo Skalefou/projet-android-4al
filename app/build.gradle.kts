@@ -5,7 +5,9 @@ plugins {
 
     kotlin("plugin.serialization") version "2.0.21"
 }
-
+val mapboxToken: String = (project.findProperty("MAPBOX_ACCESS_TOKEN") as String?)
+    ?: System.getenv("MAPBOX_ACCESS_TOKEN")
+    ?: ""
 android {
     namespace = "com.groupe1.app_android"
     compileSdk = 36
@@ -17,12 +19,12 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "MAPBOX_TOKEN", "\"pk.eyJ1IjoidmFuYW5odGEiLCJhIjoiY21oc2NmdTR0MGZ3ODJsc2NidW44bzhhaSJ9.ZPXXmTJOPxbf4vmEOHm96w\"")
     }
 
     buildTypes {
         debug {
             buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:8080\"")
+            buildConfigField("String", "MAPBOX_ACCESS_TOKEN", mapboxToken)
         }
         release {
             isMinifyEnabled = false
@@ -31,6 +33,7 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:8080\"")
+            buildConfigField("String", "MAPBOX_ACCESS_TOKEN", "\"$mapboxToken\"" )
         }
     }
 

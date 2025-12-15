@@ -13,7 +13,7 @@ open class SearchCityRemoteDataSource(
     open suspend fun searchCities(q: String): List<String> {
     val res = searchCityService.searchCities(
         query = q,
-        token = BuildConfig.MAPBOX_TOKEN
+        token = BuildConfig.MAPBOX_ACCESS_TOKEN
     )
     return res.features.mapNotNull { it.properties?.fullAddress ?: it.properties?.name }.distinct()
 }

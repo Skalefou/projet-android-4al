@@ -100,11 +100,13 @@ fun SearchBar(
 }
 
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SearchBarPreview() {
+    var q by remember { mutableStateOf("") }
     SearchBar(
-        query = "", onQueryChange = {},
+        query = q,
+        onQueryChange = { q = it },
         onSuggestionSelected = {}
     )
 }
