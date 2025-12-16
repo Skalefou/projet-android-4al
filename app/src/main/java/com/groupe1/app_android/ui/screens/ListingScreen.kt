@@ -32,6 +32,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,36 +48,17 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.groupe1.app_android.R
 import com.groupe1.app_android.domain.models.Listing
+import com.groupe1.app_android.domain.usecase.listings.ListingUseCases
 import com.groupe1.app_android.ui.components.listing.ListingBenefit
 import com.groupe1.app_android.ui.components.shared.RoundIconButton
 import com.groupe1.app_android.ui.theme.HoneyYellow
+import com.groupe1.app_android.viewModels.ListingsViewModel
 
 @Composable
-fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: () -> Unit) {
-    val listing = Listing(
-        id = 1L,
-        title = "Charming Cottage",
-        description = "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat Cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat Ut enim ad minim veniam quis nostrud exercitation ullamco laboris",
-        numberOfRooms = 3,
-        numberOfBathrooms = 1,
-        numberOfBed = 3,
-        hasWifi = true,
-        hasWashingMachine = true,
-        hasAirConditioning = true,
-        hasTv = true,
-        hasParking = true,
-        maxGuests = 6,
-        address = "Avenue de Gauthier",
-        zipCode = "75001",
-        city = "Paris",
-        country = "France",
-        firstImage = "https://cf.bstatic.com/xdata/images/hotel/max1024x768/120251269.jpg?k=638701338fd3475774a6d0e01848f44d44a450b162680bd7d9e7207e5aeb2871&o=",
-        secondImage = "https://cf.bstatic.com/xdata/images/hotel/max1024x768/120251269.jpg?k=638701338fd3475774a6d0e01848f44d44a450b162680bd7d9e7207e5aeb2871&o=",
-        thirdImage = "https://cf.bstatic.com/xdata/images/hotel/max1024x768/120251269.jpg?k=638701338fd3475774a6d0e01848f44d44a450b162680bd7d9e7207e5aeb2871&o=",
-        priceByNight = 120,
-        ownerId = 10,
-        ownerName = "Alice"
-    )
+fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: () -> Unit, listingsViewModel: ListingsViewModel) {
+    val remoteListings by listingsViewModel.remoteListings.collectAsState()
+
+    val listing = remoteListings.find { it.id == listingId } ?: return
 
     Scaffold(
         bottomBar = {
@@ -219,10 +202,4 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun ListingScreenPreview() {
-    ListingScreen(Modifier, 1L, onBackClick = {})
 }

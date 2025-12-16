@@ -13,11 +13,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkModule {
-
-    private const val BASE_URL = "http://localhost:8080"
-
     val api: Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(BuildConfig.BASE_URL.trimEnd('/') + "/")
         .client(
             OkHttpClient.Builder()
                 .addInterceptor(HttpLoggingInterceptor().setLevel(Level.BASIC))
@@ -50,7 +47,6 @@ object NetworkModule {
     }
 
     val userApi: UserApi by lazy { retrofit.create(UserApi::class.java) }
-    val listingApi : ListingApiService by lazy { retrofit.create(ListingApiService::class.java) }
 
     val searchBarCityApi : Retrofit = Retrofit.Builder()
         .baseUrl("https://api.mapbox.com/")
