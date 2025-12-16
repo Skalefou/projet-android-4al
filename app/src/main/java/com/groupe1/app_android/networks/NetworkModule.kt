@@ -1,6 +1,7 @@
 package com.groupe1.app_android.networks
 
 import com.groupe1.app_android.BuildConfig
+import com.groupe1.app_android.data.remote.services.ListingApiService
 import com.groupe1.app_android.data.remote.services.UserApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
@@ -34,13 +35,13 @@ object NetworkModule {
         OkHttpClient.Builder().apply {
             if (BuildConfig.DEBUG) {
                 val logger = HttpLoggingInterceptor()
-                logger.level = HttpLoggingInterceptor.Level.BODY
+                logger.level = Level.BODY
                 addInterceptor(logger)
             }
         }.build()
     }
 
-    private val retrofit by lazy {
+    private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL.trimEnd('/') + "/")
             .client(client)
@@ -49,6 +50,7 @@ object NetworkModule {
     }
 
     val userApi: UserApi by lazy { retrofit.create(UserApi::class.java) }
+    val listingApi : ListingApiService by lazy { retrofit.create(ListingApiService::class.java) }
 
     val searchBarCityApi : Retrofit = Retrofit.Builder()
         .baseUrl("https://api.mapbox.com/")
