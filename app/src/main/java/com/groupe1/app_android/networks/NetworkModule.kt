@@ -52,7 +52,7 @@ object NetworkModule {
     // For other api calls to back end that need authorization header
     val client = OkHttpClient.Builder()
         .addInterceptor(AuthInterceptor(userApi))
-        .addInterceptor(HttpLoggingInterceptor().setLevel(Level.BASIC))
+        .addInterceptor(HttpLoggingInterceptor().setLevel(Level.HEADERS))
         .build()
 
     val api: Retrofit = Retrofit.Builder()

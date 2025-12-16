@@ -1,5 +1,6 @@
 package com.groupe1.app_android.networks.session
 
+import android.util.Log
 import com.groupe1.app_android.data.remote.services.RefreshRequest
 import com.groupe1.app_android.data.remote.services.UserApi
 import kotlinx.coroutines.runBlocking
@@ -22,11 +23,16 @@ class AuthInterceptor(
         }
 
         val access = TokenProvider.getAccessToken()
+        Log.d("AuthInterceptor", "Path: $path, Access token present: ${!access.isNullOrBlank()}")
         val firstRequest = if (!access.isNullOrBlank()) {
+            Log.d("AuthInterceptor", "Adding Authorization header with token")
             original.newBuilder()
                 .header("Authorization", "Bearer $access")
                 .build()
-        } else original
+        } else {
+            Log.w("AuthInterceptor", "No access token available for request to $path")
+            original
+        }
 
         val firstResponse = chain.proceed(firstRequest)
 
