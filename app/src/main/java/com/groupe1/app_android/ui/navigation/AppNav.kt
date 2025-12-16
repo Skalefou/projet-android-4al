@@ -25,6 +25,7 @@ import androidx.navigation.navArgument
 import com.groupe1.app_android.auth.UserPreferences
 import com.groupe1.app_android.auth.isJwtValid
 import com.groupe1.app_android.auth.userPreferencesDataStore
+import com.groupe1.app_android.domain.usecase.listings.ListingUseCases
 import com.groupe1.app_android.ui.components.TopNavBar
 import com.groupe1.app_android.ui.main.InboxScreen
 import com.groupe1.app_android.ui.main.MapScreen
@@ -44,6 +45,7 @@ import com.groupe1.app_android.ui.screens.filterListing.FilterWhenScreen
 import com.groupe1.app_android.ui.screens.filterListing.FilterWhereScreen
 import com.groupe1.app_android.ui.settings.SettingsScreen
 import com.groupe1.app_android.viewModels.FiltersViewModel
+import com.groupe1.app_android.viewModels.ListingViewModel
 import com.groupe1.app_android.viewModels.ListingsViewModel
 
 
@@ -69,7 +71,7 @@ object Routes {
 }
 
 @Composable
-fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel, filtersViewModel: FiltersViewModel) {
+fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel, filtersViewModel: FiltersViewModel, listingUseCases: ListingUseCases) {
     val context = LocalContext.current
 
     val prefsState by context.userPreferencesDataStore
@@ -175,7 +177,7 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel, filters
                 ListingScreen(
                     modifier = Modifier.background(Color.White),
                     listingId = listingId,
-                    listingsViewModel = listingsViewModel,
+                    listingViewModel = ListingViewModel(listingId, listingUseCases),
                     onBackClick = { nav.popBackStack() }
                 )
             }

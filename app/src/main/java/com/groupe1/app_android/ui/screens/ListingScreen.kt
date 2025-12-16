@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.outlined.AcUnit
 import androidx.compose.material.icons.outlined.LocalLaundryService
@@ -43,23 +44,36 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.groupe1.app_android.R
-import com.groupe1.app_android.domain.models.Listing
-import com.groupe1.app_android.domain.usecase.listings.ListingUseCases
 import com.groupe1.app_android.ui.components.listing.ListingBenefit
 import com.groupe1.app_android.ui.components.shared.RoundIconButton
 import com.groupe1.app_android.ui.theme.HoneyYellow
+import com.groupe1.app_android.viewModels.ListingViewModel
 import com.groupe1.app_android.viewModels.ListingsViewModel
 
 @Composable
-fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: () -> Unit, listingsViewModel: ListingsViewModel) {
-    val remoteListings by listingsViewModel.remoteListings.collectAsState()
+fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: () -> Unit, listingViewModel: ListingViewModel) {
+    val listing by listingViewModel.remoteListing.collectAsState()
+    val remoteIsFavorite by listingViewModel.remoteIsFavorite.collectAsState()
 
-    val listing = remoteListings.find { it.id == listingId } ?: return
+    if (listing == null) {
+        Scaffold { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Erreur de chargement des données.…")
+            }
+        }
+        return
+    }
+
+    val l = listing!!
 
     Scaffold(
         bottomBar = {
@@ -87,7 +101,7 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
         ) {
             Box {
                 AsyncImage(
-                    model = listing.firstImage,
+                    model = l.firstImage,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     placeholder = painterResource(R.drawable.image_placeholder),
@@ -107,8 +121,10 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
                         onClick = onBackClick,
                     )
                     RoundIconButton(
-                        icon = Icons.Default.FavoriteBorder,
-                        onClick = {},
+                        icon = if(remoteIsFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        onClick = {
+                            listingViewModel.likeListing()
+                          },
                     )
                 }
             }
@@ -124,7 +140,7 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
                     verticalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
                     Text(
-                        listing.title,
+                        l.title,
                         modifier = Modifier.fillMaxWidth(),
                         fontFamily = FontFamily(Font(R.font.montserrat_semibold)),
                         fontWeight = FontWeight.Bold,
@@ -132,12 +148,12 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        listing.city + ", " +
-                                listing.country + " • " +
-                                listing.maxGuests + " voyageurs • " +
-                                listing.numberOfBed + " lits • " +
-                                listing.numberOfBathrooms + " salle de bain • " +
-                                listing.numberOfRooms + " chambres",
+                        l.city + ", " +
+                                l.country + " • " +
+                                l.maxGuests + " voyageurs • " +
+                                l.numberOfBed + " lits • " +
+                                l.numberOfBathrooms + " salle de bain • " +
+                                l.numberOfRooms + " chambres",
                         fontFamily = FontFamily(Font(R.font.montserrat_medium)),
                         color = Color.Gray,
                         textAlign = TextAlign.Center,
@@ -150,14 +166,14 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
                         horizontalArrangement = Arrangement.spacedBy(14.dp)
                     ) {
                         AsyncImage(
-                            model = "https://api.dicebear.com/9.x/lorelei/png?seed=${listing.ownerName}",
+                            model = "https://api.dicebear.com/9.x/lorelei/png?seed=${l.ownerName}",
                             contentDescription = "Owner avatar",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.size(48.dp)
                         )
                         Column(verticalArrangement = Arrangement.Center) {
                             Text(
-                                listing.ownerName,
+                                l.ownerName,
                                 fontFamily = FontFamily(Font(R.font.montserrat_medium)),
                                 textAlign = TextAlign.Center,
                                 fontSize = 14.sp
@@ -173,7 +189,7 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
                     }
                     HorizontalDivider(thickness = 0.5.dp)
                     Text(
-                        listing.description,
+                        l.description,
                         fontFamily = FontFamily(Font(R.font.montserrat_regular)),
                         fontSize = 16.sp,
                     )
@@ -185,19 +201,19 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
                     )
-                    if (listing.hasWifi) {
+                    if (l.hasWifi) {
                         ListingBenefit(Icons.Outlined.Wifi, "Wifi")
                     }
-                    if (listing.hasWashingMachine) {
+                    if (l.hasWashingMachine) {
                         ListingBenefit(Icons.Outlined.LocalLaundryService, "Machine à laver")
                     }
-                    if (listing.hasAirConditioning) {
+                    if (l.hasAirConditioning) {
                         ListingBenefit(Icons.Outlined.AcUnit, "Climatisation")
                     }
-                    if (listing.hasTv) {
+                    if (l.hasTv) {
                         ListingBenefit(Icons.Outlined.Tv, "Télévision")
                     }
-                    if (listing.hasParking) {
+                    if (l.hasParking) {
                         ListingBenefit(Icons.Outlined.LocalParking, "Parking")
                     }
                 }

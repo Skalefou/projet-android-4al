@@ -1,5 +1,6 @@
 package com.groupe1.app_android.viewModels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.groupe1.app_android.domain.models.Listing
@@ -31,16 +32,4 @@ class ListingsViewModel(
             }
         }
     }
-
-    fun addListingToFavorites(id: Long) {
-        viewModelScope.launch {
-            try {
-                useCases.likeListing(id)
-            } catch (e: Exception) {
-                _error.value = "Erreur lors de l'ajout au favoris. Error: ${e.message}"
-            }
-        }
-    }
-
-    fun getListingById(id: Long) = _remoteListings.value.find { it.id == id  }
 }

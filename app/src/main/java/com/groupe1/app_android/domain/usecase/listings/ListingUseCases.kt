@@ -8,6 +8,7 @@ import com.groupe1.app_android.domain.usecase.listings.favorites.UnlikeListingUs
 
 data class ListingUseCases(
     val getAllListing: GetAllListingUseCase,
+    val getListing: GetListingUseCase,
     val getAllMyFavorites: GetAllMyFavoritesUseCase,
     val isFavorite: IsFavoriteUseCase,
     val likeListing: LikeListingUseCase,

@@ -13,6 +13,7 @@ import com.groupe1.app_android.data.repository.FilterListingRepositoryImpl
 import com.groupe1.app_android.data.repository.ListingRepositoryImpl
 import com.groupe1.app_android.domain.usecase.listings.GetAllListingUseCase
 import com.groupe1.app_android.domain.usecase.listings.GetFilteredListingsUseCase
+import com.groupe1.app_android.domain.usecase.listings.GetListingUseCase
 import com.groupe1.app_android.domain.usecase.listings.ListingUseCases
 import com.groupe1.app_android.domain.usecase.listings.favorites.GetAllMyFavoritesUseCase
 import com.groupe1.app_android.domain.usecase.listings.favorites.IsFavoriteUseCase
@@ -35,12 +36,14 @@ class MainActivity : ComponentActivity() {
 
     private val listingUseCases = ListingUseCases(
         getAllListing = GetAllListingUseCase(listingRepository),
+        getListing = GetListingUseCase(listingRepository),
         getAllMyFavorites = GetAllMyFavoritesUseCase(favoriteRepository),
         isFavorite = IsFavoriteUseCase(favoriteRepository),
         likeListing = LikeListingUseCase(favoriteRepository),
         unlikeListing = UnlikeListingUseCase(favoriteRepository),
         getFilteredListings = GetFilteredListingsUseCase(filterListingRepository)
     )
+
     private val listingsViewModel = ListingsViewModel(listingUseCases)
 
     private val filtersViewModel = FiltersViewModel(listingUseCases)
@@ -60,7 +63,8 @@ class MainActivity : ComponentActivity() {
                     AppNav(
                         nav,
                         listingsViewModel = listingsViewModel,
-                        filtersViewModel = filtersViewModel
+                        filtersViewModel = filtersViewModel,
+                        listingUseCases = listingUseCases
                     )
                 }
             }
