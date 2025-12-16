@@ -3,7 +3,6 @@ package com.groupe1.app_android.networks
 import com.groupe1.app_android.BuildConfig
 import com.groupe1.app_android.data.remote.services.UserApi
 import com.groupe1.app_android.networks.session.AuthInterceptor
-import com.groupe1.app_android.networks.session.SessionManager
 import com.groupe1.app_android.networks.session.TokenProvider
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
