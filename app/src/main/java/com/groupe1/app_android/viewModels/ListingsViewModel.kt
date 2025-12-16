@@ -32,5 +32,15 @@ class ListingsViewModel(
         }
     }
 
+    fun addListingToFavorites(id: Long) {
+        viewModelScope.launch {
+            try {
+                useCases.likeListing(id)
+            } catch (e: Exception) {
+                _error.value = "Erreur lors de l'ajout au favoris. Error: ${e.message}"
+            }
+        }
+    }
+
     fun getListingById(id: Long) = _remoteListings.value.find { it.id == id  }
 }
