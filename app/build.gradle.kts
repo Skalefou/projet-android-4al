@@ -24,7 +24,7 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:8080\"")
-            buildConfigField("String", "MAPBOX_ACCESS_TOKEN", "\"$mapboxToken\"")
+            buildConfigField("String", "MAPBOX_ACCESS_TOKEN", mapboxToken)
         }
         release {
             isMinifyEnabled = false
@@ -33,7 +33,7 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:8080\"")
-            buildConfigField("String", "MAPBOX_ACCESS_TOKEN", "\"$mapboxToken\"" )
+            buildConfigField("String", "MAPBOX_ACCESS_TOKEN", mapboxToken)
         }
     }
 

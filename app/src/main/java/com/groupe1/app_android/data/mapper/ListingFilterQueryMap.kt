@@ -8,7 +8,7 @@ import com.groupe1.app_android.data.remote.models.SearchFilters
  */
 fun mapSearchFilterToQueryMap(filters: SearchFilters): Map<String, String> {
     return buildMap {
-        if (filters.city.isNotBlank()) put("city", filters.city)
+        if (filters.city.isNotBlank()) put("city", filters.city.split(",")[0])
 
         filters.checkIn?.let { put("checkIn", it.toString()) }
         filters.checkOut?.let { put("checkOut", it.toString()) }
