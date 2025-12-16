@@ -175,6 +175,7 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel, filters
                 ListingScreen(
                     modifier = Modifier.background(Color.White),
                     listingId = listingId,
+                    listingsViewModel = listingsViewModel,
                     onBackClick = { nav.popBackStack() }
                 )
             }

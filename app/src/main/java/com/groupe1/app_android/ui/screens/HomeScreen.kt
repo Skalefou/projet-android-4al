@@ -201,7 +201,7 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(48.dp)
             ) {
-                items(listings) { listing ->
+                items(remoteListings) { listing ->
                     ListingCard(Modifier.clickable {
                         onItemClick(listing.id)
                     }, listing)

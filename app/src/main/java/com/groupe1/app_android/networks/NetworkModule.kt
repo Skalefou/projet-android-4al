@@ -1,6 +1,7 @@
 package com.groupe1.app_android.networks
 
 import com.groupe1.app_android.BuildConfig
+import com.groupe1.app_android.data.remote.services.ListingApiService
 import com.groupe1.app_android.data.remote.services.UserApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
@@ -12,11 +13,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkModule {
-
-    private const val BASE_URL = "http://localhost:8080"
-
     val api: Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(BuildConfig.BASE_URL.trimEnd('/') + "/")
         .client(
             OkHttpClient.Builder()
                 .addInterceptor(HttpLoggingInterceptor().setLevel(Level.BASIC))
@@ -34,13 +32,13 @@ object NetworkModule {
         OkHttpClient.Builder().apply {
             if (BuildConfig.DEBUG) {
                 val logger = HttpLoggingInterceptor()
-                logger.level = HttpLoggingInterceptor.Level.BODY
+                logger.level = Level.BODY
                 addInterceptor(logger)
             }
         }.build()
     }
 
-    private val retrofit by lazy {
+    private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL.trimEnd('/') + "/")
             .client(client)
