@@ -100,22 +100,42 @@ fun FilterResultsScreen(
                 )
             }
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(bottom = 80.dp)
-            ) {
-                items(listings, key = { it.id }) { listing ->
-                    ListingPreviewCard(
-                        listing = listing,
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = { onListingClick(listing) }
+            // List card preview if not empty
+            if (listings.isEmpty()) {
+                // Empty state
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 48.dp),
+                    contentAlignment = Alignment.TopCenter
+                ) {
+                    Text(
+                        text = "Pas de résultats",
+                        fontFamily = FontFamily(Font(R.font.montserrat_semibold)),
+                        fontSize = 18.sp,
+                        color = Color.Black
                     )
+                }
+            } else {
+                // Results list
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    contentPadding = PaddingValues(bottom = 80.dp)
+                ) {
+                    items(listings, key = { it.id }) { listing ->
+                        ListingPreviewCard(
+                            listing = listing,
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = { onListingClick(listing) }
+                        )
+                    }
                 }
             }
         }
     }
 }
+
 
 
 //@Preview(showBackground = true)
