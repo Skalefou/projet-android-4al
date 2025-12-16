@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
@@ -38,11 +39,12 @@ fun ListingCard(modifier: Modifier, listing: Listing) {
             model = listing.firstImage,
             contentDescription = null,
             contentScale = ContentScale.Crop,
+            placeholder = painterResource(R.drawable.image_placeholder),
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
                 .aspectRatio(16f / 9f)
                 .fillMaxWidth()
-                .background(Color.Blue)
+                .background(Color(0xC5C5C5))
         )
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(
