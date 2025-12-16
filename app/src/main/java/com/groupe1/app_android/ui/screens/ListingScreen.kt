@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -89,10 +90,11 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
                     model = listing.firstImage,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
+                    placeholder = painterResource(R.drawable.image_placeholder),
                     modifier = Modifier
                         .aspectRatio(16f / 14f)
                         .fillMaxWidth()
-                        .background(Color.Blue)
+                        .background(Color(0xC5C5C5))
                 )
                 Row(
                     modifier = Modifier
