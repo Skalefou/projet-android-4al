@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Surface
 import androidx.navigation.compose.rememberNavController
+import com.groupe1.app_android.networks.session.TokenProvider
+import com.groupe1.app_android.auth.userPreferencesDataStore
 import com.groupe1.app_android.data.repository.FavoriteRepositoryImpl
 import com.groupe1.app_android.data.repository.FilterListingRepositoryImpl
 import com.groupe1.app_android.data.repository.ListingRepositoryImpl
@@ -20,6 +22,9 @@ import com.groupe1.app_android.ui.navigation.AppNav
 import com.groupe1.app_android.ui.theme.ProjetandroidTheme
 import com.groupe1.app_android.viewModels.FiltersViewModel
 import com.groupe1.app_android.viewModels.ListingsViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : ComponentActivity() {
     // Listings
@@ -40,8 +45,13 @@ class MainActivity : ComponentActivity() {
 
     private val filtersViewModel = FiltersViewModel(listingUseCases)
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        runBlocking {
+            val prefs = applicationContext.userPreferencesDataStore.data.first()
+            TokenProvider.setTokens(prefs.accessToken, prefs.refreshToken)
+        }
         enableEdgeToEdge()
         setContent {
             ProjetandroidTheme(dynamicColor = false) {
