@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -27,12 +28,17 @@ import com.groupe1.app_android.viewModels.ListingsViewModel
 
 @Composable
 fun HomeScreen(
+    modifier: Modifier = Modifier,
     currentUser: User,
     listingsViewModel: ListingsViewModel,
     onTriggerFilterAd: () -> Unit,
     onItemClick: (Long) -> Unit,
     onClickGoToCreateProposal: () -> Unit
 ) {
+    LaunchedEffect(currentUser.id) {
+        listingsViewModel.getListingsFromRepo()
+    }
+
     // TODO: USE ME
     val remoteListings by listingsViewModel.remoteListings.collectAsState()
 
@@ -186,7 +192,7 @@ fun HomeScreen(
 
     Surface {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .windowInsetsPadding(WindowInsets.safeDrawing)
                 .padding(12.dp)
@@ -199,7 +205,7 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(48.dp)
             ) {
-                items(listings) { listing ->
+                items(remoteListings) { listing ->
                     ListingCard(Modifier.clickable {
                         onItemClick(listing.id)
                     }, listing)

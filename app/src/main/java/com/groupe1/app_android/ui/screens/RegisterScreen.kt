@@ -23,6 +23,7 @@ import com.groupe1.app_android.auth.userPreferencesDataStore
 import com.groupe1.app_android.data.remote.UserRemoteDataSource
 import com.groupe1.app_android.data.remote.models.RegisterUserDTO
 import com.groupe1.app_android.ui.components.BackButton
+import com.groupe1.app_android.networks.session.TokenProvider
 import com.groupe1.app_android.ui.theme.defaultOutlinedTextFieldColors
 import kotlinx.coroutines.launch
 
@@ -68,6 +69,8 @@ fun RegisterScreen(
                     refreshToken = response.tokenPair.refresh
                 )
             }
+            // Mettre à jour le TokenProvider pour que l'AuthInterceptor puisse utiliser le token
+            TokenProvider.setTokens(response.tokenPair.access, response.tokenPair.refresh)
             emailAlreadyUsedError = false
             true
         } catch (e: Exception) {

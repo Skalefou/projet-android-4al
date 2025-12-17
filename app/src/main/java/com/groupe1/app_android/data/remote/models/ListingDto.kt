@@ -23,5 +23,6 @@ data class ListingDto(
     val thirdImage: String?,
     val priceByNight: Int,
     val ownerId: Long,
-    val ownerName: String
+    val ownerName: String,
+    val type: String? = "Chambre"
 )

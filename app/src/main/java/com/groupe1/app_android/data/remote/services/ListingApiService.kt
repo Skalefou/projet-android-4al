@@ -6,6 +6,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.QueryMap
 
 interface ListingApiService {
     @GET("/api/listings")
@@ -16,4 +17,9 @@ interface ListingApiService {
 
     @POST("/api/listings")
     suspend fun postListing(@Body proposal: CreateProposalDTO): ListingDto
+    
+    @GET("/api/listings/search")
+    suspend fun getFilteredListings(
+        @QueryMap filters: Map<String, String>
+    ): List<ListingDto>
 }

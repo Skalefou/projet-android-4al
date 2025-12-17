@@ -20,5 +20,8 @@ data class CreateProposalDTO(
     val zipCode: String,
     val city: String,
     val country: String,
-    val priceByNight: Int
+    val priceByNight: Int,
+    val firstImage: String,
+    val secondImage: String,
+    val thirdImage: String
 )

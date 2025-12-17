@@ -21,13 +21,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun SearchBar(
     query: String,
-    onQueryChange: (String) -> Unit
+    onQueryChange: (String) -> Unit,
+    onSuggestionSelected: (String) -> Unit
 ) {
     var suggestions by remember { mutableStateOf<List<String>>(emptyList()) }
     var expanded by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     var searchJob by remember { mutableStateOf<Job?>(null) }
-    val filterListingRepository: FilterListingRepositoryImpl = FilterListingRepositoryImpl()
+    val filterListingRepository = FilterListingRepositoryImpl()
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -89,7 +90,7 @@ fun SearchBar(
                 DropdownMenuItem(
                     text = { Text(city) },
                     onClick = {
-                        onQueryChange(city)
+                        onSuggestionSelected(city)
                         expanded = false
                     }
                 )
@@ -99,8 +100,13 @@ fun SearchBar(
 }
 
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun SearchBarPreview() {
-    SearchBar(query = "", onQueryChange = {})
+    var q by remember { mutableStateOf("") }
+    SearchBar(
+        query = q,
+        onQueryChange = { q = it },
+        onSuggestionSelected = {}
+    )
 }

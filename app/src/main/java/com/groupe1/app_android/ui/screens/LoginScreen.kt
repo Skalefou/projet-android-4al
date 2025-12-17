@@ -29,6 +29,7 @@ import com.groupe1.app_android.auth.UserPreferences
 import com.groupe1.app_android.auth.userPreferencesDataStore
 import com.groupe1.app_android.data.remote.UserRemoteDataSource
 import com.groupe1.app_android.dtos.LoginUserDTO
+import com.groupe1.app_android.networks.session.TokenProvider
 import com.groupe1.app_android.ui.components.BackButton
 import com.groupe1.app_android.ui.theme.defaultOutlinedTextFieldColors
 import kotlinx.coroutines.launch
@@ -61,6 +62,7 @@ fun LoginScreen(
                     refreshToken = response.tokenPair.refresh
                 )
             }
+            TokenProvider.setTokens(response.tokenPair.access, response.tokenPair.refresh)
             connexionError = false;
             true
         } catch (e: Exception) {

@@ -2,8 +2,12 @@ package com.groupe1.app_android.ui.screens.filterListing
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -12,12 +16,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.groupe1.app_android.ui.components.DateRangeHeadline
 import com.groupe1.app_android.ui.theme.HoneyYellow
+import com.groupe1.app_android.viewModels.FiltersViewModel
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilterWhenScreen() {
-    val dateRangeState = rememberDateRangePickerState()
+fun FilterWhenScreen(
+    viewModel: FiltersViewModel,
+    onNext: () -> Unit,
+    onBack: () -> Unit,
+    onQuit: () -> Unit
+) {
+    val filters by viewModel.filters.collectAsState()
+    val dateRangeState = rememberDateRangePickerState(
+        initialSelectedStartDateMillis = filters.checkIn,
+        initialSelectedEndDateMillis = filters.checkOut
+    )
 
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -27,12 +41,32 @@ fun FilterWhenScreen() {
                 .fillMaxSize()
                 .absolutePadding(25.dp, 50.dp, 25.dp, 50.dp)
         ) {
-            // Title
-            Text(
-                text = "Quand partez-vous ?",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+
+                Text(
+                    text = "Quand partez-vous ?",
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f),
+                )
+
+                IconButton(onClick = onQuit) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Quit"
+                    )
+                }
+            }
 
             Spacer(Modifier.height(30.dp))
 
@@ -64,11 +98,6 @@ fun FilterWhenScreen() {
                                 }
                             }
 
-
-                        val dateRangePickerState = rememberDateRangePickerState(
-                            selectableDates = selectableDates
-                        )
-
                         DateRangePicker(
                             state = dateRangeState,
                             modifier = Modifier.fillMaxWidth(),
@@ -99,8 +128,11 @@ fun FilterWhenScreen() {
             // Next button
             Button(
                 onClick = {
-                    // dateRangeState.selectedStartDateMillis / selectedEndDateMillis
-                    // contain the chosen dates here
+                    viewModel.updateDates(
+                        dateRangeState.selectedStartDateMillis,
+                        dateRangeState.selectedEndDateMillis
+                    )
+                    onNext()
                 },
                 shape = RoundedCornerShape(50),
                 modifier = Modifier
@@ -117,9 +149,8 @@ fun FilterWhenScreen() {
 }
 
 
-
-@Preview
-@Composable
-fun FilterWhenScreenPreview_1() {
-    FilterWhenScreen()
-}
+//@Preview
+//@Composable
+//fun FilterWhenScreenPreview_1() {
+//    FilterWhenScreen()
+//}

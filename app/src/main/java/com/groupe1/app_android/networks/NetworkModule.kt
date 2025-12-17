@@ -2,6 +2,8 @@ package com.groupe1.app_android.networks
 
 import com.groupe1.app_android.BuildConfig
 import com.groupe1.app_android.data.remote.services.UserApi
+import com.groupe1.app_android.networks.session.AuthInterceptor
+import com.groupe1.app_android.networks.session.TokenProvider
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -13,47 +15,47 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkModule {
 
-    private const val BASE_URL = "http://localhost:8080"
+    // For user APIs that don't need authorization header, skip interceptor
+    private val userClient by lazy {
+        OkHttpClient.Builder().apply {
+            if (BuildConfig.DEBUG) {
+                val logger = HttpLoggingInterceptor()
+                logger.level = Level.BODY
+                addInterceptor(logger)
+            }
+        }.build()
+    }
 
-    val api: Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .client(
-            OkHttpClient.Builder()
-                .addInterceptor(HttpLoggingInterceptor().setLevel(Level.BASIC))
-                .build()
-        )
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    private val userRetrofitInstance: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL.trimEnd('/') + "/")
+            .client(userClient)
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+            .build()
+    }
+
+    val userApi: UserApi by lazy { userRetrofitInstance.create(UserApi::class.java) }
+
+
 
     private val json = Json {
         ignoreUnknownKeys = true
         isLenient = true
     }
 
-    private val client by lazy {
-        OkHttpClient.Builder().apply {
-            if (BuildConfig.DEBUG) {
-                val logger = HttpLoggingInterceptor()
-                logger.level = HttpLoggingInterceptor.Level.BODY
-                addInterceptor(logger)
-                addInterceptor(AccessTokenInterceptor())
-            }
-        }.build()
-    }
-
-    private val retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL.trimEnd('/') + "/")
-            .client(client)
-            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-            .build()
-    }
-
-    val userApi: UserApi by lazy { retrofit.create(UserApi::class.java) }
-    val
-
-    val searchBarCityApi = Retrofit.Builder()
+    val searchBarCityApi : Retrofit = Retrofit.Builder()
         .baseUrl("https://api.mapbox.com/")
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+        .build()
+
+    val client = OkHttpClient.Builder()
+        .addInterceptor(AuthInterceptor(userApi))
+        .addInterceptor(HttpLoggingInterceptor().setLevel(Level.BODY))
+        .build()
+
+    val api: Retrofit = Retrofit.Builder()
+        .baseUrl(BuildConfig.BASE_URL.trimEnd('/') + "/")
+        .client(client)
+        .addConverterFactory(GsonConverterFactory.create())
         .build()
 }

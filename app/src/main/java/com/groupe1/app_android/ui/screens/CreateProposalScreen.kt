@@ -18,6 +18,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,8 +26,6 @@ import com.groupe1.app_android.data.remote.models.CreateProposalDTO
 import com.groupe1.app_android.data.repository.ListingRepositoryImpl
 import com.groupe1.app_android.domain.models.User
 import com.groupe1.app_android.domain.usecase.listings.CreateProposalUseCase
-import com.groupe1.app_android.domain.usecase.listings.GetAllListingUseCase
-import com.groupe1.app_android.domain.usecase.listings.ListingUseCases
 import com.groupe1.app_android.ui.components.BackButton
 import com.groupe1.app_android.ui.components.shared.BoolSwitchField
 import com.groupe1.app_android.ui.components.shared.FormTextField
@@ -61,6 +60,10 @@ fun CreateProposalScreen(
     var city by remember { mutableStateOf("") }
     var country by remember { mutableStateOf("") }
 
+    var image1 by remember { mutableStateOf("") }
+    var image2 by remember { mutableStateOf("") }
+    var image3 by remember { mutableStateOf("") }
+
     var titleError by remember { mutableStateOf(false) }
     var descriptionError by remember { mutableStateOf(false) }
     var typeError by remember { mutableStateOf(false) }
@@ -82,15 +85,16 @@ fun CreateProposalScreen(
     var cityError by remember { mutableStateOf(false) }
     var countryError by remember { mutableStateOf(false) }
 
+    var image1Error by remember { mutableStateOf(false) }
+    var image2Error by remember { mutableStateOf(false) }
+    var image3Error by remember { mutableStateOf(false) }
+
     var connexionError by remember { mutableStateOf(false) }
 
     val scrollState = rememberScrollState()
 
     val listingRepository = ListingRepositoryImpl()
-    val listingUseCases = ListingUseCases(
-        GetAllListingUseCase(listingRepository),
-        CreateProposalUseCase(listingRepository)
-    )
+    val createProposalUseCase = CreateProposalUseCase(listingRepository)
 
 
     suspend fun createProposalScreenPost(): Boolean {
@@ -112,9 +116,12 @@ fun CreateProposalScreen(
                 zipCode = zipCode,
                 city = city,
                 country = country,
-                priceByNight = priceByNight
+                priceByNight = priceByNight,
+                firstImage = image1,
+                secondImage = image2,
+                thirdImage = image3
             )
-            val response = listingUseCases.createProposal.invoke(
+            val response = createProposalUseCase.invoke(
                 createProposal
             )
             connexionError = false
@@ -303,10 +310,39 @@ fun CreateProposalScreen(
                 errorText = "Prix invalide"
             )
 
+            FormTextField(
+                value = image1,
+                onValueChange = { image1 = it; image1Error = false },
+                label = "Image 1",
+                error = image1Error,
+                errorText = "Une image est requise",
+                singleLine = true
+            )
+
+            FormTextField(
+                value = image2,
+                onValueChange = { image2 = it; image2Error = false },
+                label = "Image 2",
+                error = image2Error,
+                errorText = "Une image est requise",
+                singleLine = true
+            )
+
+
+            FormTextField(
+                value = image3,
+                onValueChange = { image3 = it; image3Error = false },
+                label = "Image 3",
+                error = image3Error,
+                errorText = "Image 3",
+                singleLine = true
+            )
+
+
             if (connexionError) {
                 Text(
                     text = "Erreur de connexion. Veuillez réessayer.",
-                    color = androidx.compose.ui.graphics.Color.Red,
+                    color = Color.Red,
                     modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
                 )
             }
