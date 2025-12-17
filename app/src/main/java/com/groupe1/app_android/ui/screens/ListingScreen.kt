@@ -40,10 +40,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -55,7 +59,11 @@ import com.groupe1.app_android.viewModels.ListingViewModel
 import com.groupe1.app_android.viewModels.ListingsViewModel
 
 @Composable
-fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: () -> Unit, listingViewModel: ListingViewModel) {
+fun ListingScreen(
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
+    listingViewModel: ListingViewModel
+) {
     val listing by listingViewModel.remoteListing.collectAsState()
     val remoteIsFavorite by listingViewModel.remoteIsFavorite.collectAsState()
 
@@ -121,10 +129,10 @@ fun ListingScreen(modifier: Modifier = Modifier, listingId: Long, onBackClick: (
                         onClick = onBackClick,
                     )
                     RoundIconButton(
-                        icon = if(remoteIsFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        icon = if (remoteIsFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                         onClick = {
                             listingViewModel.likeListing()
-                          },
+                        },
                     )
                 }
             }

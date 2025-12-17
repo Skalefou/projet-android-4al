@@ -159,6 +159,7 @@ fun AppNav(
             composable(Routes.WISHLIST) {
                 RequireUser(nav) { user ->
                     WishlistScreen(
+                        modifier = Modifier.padding(innerPadding),
                         favoritesViewModel = favoritesViewModel,
                         currentUser = user,
                         onItemClick = { listingId ->
@@ -192,7 +193,6 @@ fun AppNav(
                     ?: error("listingId missing in navigation")
                 ListingScreen(
                     modifier = Modifier.background(Color.White),
-                    listingId = listingId,
                     listingViewModel = ListingViewModel(
                         listingId = listingId,
                         useCases = listingUseCases

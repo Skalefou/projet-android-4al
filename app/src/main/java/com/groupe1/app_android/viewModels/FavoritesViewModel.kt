@@ -1,5 +1,6 @@
 package com.groupe1.app_android.viewModels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.groupe1.app_android.domain.models.Listing
@@ -26,6 +27,8 @@ class FavoritesViewModel(
         viewModelScope.launch {
             try {
                 _remoteFavorites.value = listingUseCases.getAllMyFavorites()
+                _error.value = null
+                Log.d("FavoritesViewModel", "Favorites: ${_remoteFavorites.value}")
             } catch (e: Exception) {
                 _error.value = "Erreur de chargement des données. Error: ${e.message}"
             }
