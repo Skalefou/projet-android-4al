@@ -72,14 +72,12 @@ fun ListingPreviewCard(
                         )
                 )
 
-                // Heart icon
                 RoundIconButton(
                     icon = Icons.Default.FavoriteBorder,
                     onClick = { /* toggle favorite */ }
                 )
             }
 
-            // Text content
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

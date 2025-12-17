@@ -11,6 +11,7 @@ import com.groupe1.app_android.auth.userPreferencesDataStore
 import com.groupe1.app_android.data.repository.FavoriteRepositoryImpl
 import com.groupe1.app_android.data.repository.FilterListingRepositoryImpl
 import com.groupe1.app_android.data.repository.ListingRepositoryImpl
+import com.groupe1.app_android.domain.usecase.listings.CreateProposalUseCase
 import com.groupe1.app_android.domain.usecase.listings.GetAllListingUseCase
 import com.groupe1.app_android.domain.usecase.listings.GetFilteredListingsUseCase
 import com.groupe1.app_android.domain.usecase.listings.GetListingUseCase
@@ -29,13 +30,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class MainActivity : ComponentActivity() {
-    // Listings
     private val listingRepository = ListingRepositoryImpl()
     private val favoriteRepository = FavoriteRepositoryImpl()
 
     private val filterListingRepository = FilterListingRepositoryImpl()
 
     private val listingUseCases = ListingUseCases(
+        createProposal = CreateProposalUseCase(listingRepository),
         getAllListing = GetAllListingUseCase(listingRepository),
         getListing = GetListingUseCase(listingRepository),
         getAllMyFavorites = GetAllMyFavoritesUseCase(favoriteRepository),

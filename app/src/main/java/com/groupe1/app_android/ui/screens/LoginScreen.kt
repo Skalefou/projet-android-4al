@@ -1,6 +1,5 @@
 package com.groupe1.app_android.ui.screens
 
-import android.R.attr.text
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,6 +30,7 @@ import com.groupe1.app_android.auth.userPreferencesDataStore
 import com.groupe1.app_android.data.remote.UserRemoteDataSource
 import com.groupe1.app_android.dtos.LoginUserDTO
 import com.groupe1.app_android.networks.session.TokenProvider
+import com.groupe1.app_android.ui.components.BackButton
 import com.groupe1.app_android.ui.theme.defaultOutlinedTextFieldColors
 import kotlinx.coroutines.launch
 
@@ -78,16 +77,10 @@ fun LoginScreen(
             .padding(24.dp)
     ) {
 
-        IconButton(
-            onClick = { onClickGoToGate() },
-            modifier = Modifier.align(Alignment.Start)
+        BackButton(
+            modifier = Modifier.align(Alignment.Start),
+            onClick = { onClickGoToGate() }
         )
-        {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Retour"
-            )
-        }
 
         Column(
             modifier = Modifier

@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.groupe1.app_android.domain.models.Listing
 import com.groupe1.app_android.domain.models.User
+import com.groupe1.app_android.ui.components.AddProposalButton
 import com.groupe1.app_android.ui.components.FilterAdTriggerButton
 import com.groupe1.app_android.ui.components.listing.ListingCard
 import com.groupe1.app_android.viewModels.ListingsViewModel
@@ -31,7 +32,8 @@ fun HomeScreen(
     currentUser: User,
     listingsViewModel: ListingsViewModel,
     onTriggerFilterAd: () -> Unit,
-    onItemClick: (Long) -> Unit
+    onItemClick: (Long) -> Unit,
+    onClickGoToCreateProposal: () -> Unit
 ) {
     LaunchedEffect(currentUser.id) {
         listingsViewModel.getListingsFromRepo()
@@ -46,9 +48,6 @@ fun HomeScreen(
                 .windowInsetsPadding(WindowInsets.safeDrawing)
                 .padding(12.dp)
         ) {
-            Text(
-                "Bonjour ${currentUser.firstName} !",
-            )
             FilterAdTriggerButton(
                 placeholder = "Commencer ma recherche",
                 onClick = { onTriggerFilterAd() })
@@ -64,5 +63,8 @@ fun HomeScreen(
                 }
             }
         }
+        AddProposalButton(
+            onClick = { onClickGoToCreateProposal() }
+        )
     }
 }

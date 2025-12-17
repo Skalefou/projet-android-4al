@@ -37,7 +37,7 @@ object NetworkModule {
     val userApi: UserApi by lazy { userRetrofitInstance.create(UserApi::class.java) }
 
 
-    // For search bar call api mapbox
+
     private val json = Json {
         ignoreUnknownKeys = true
         isLenient = true
@@ -48,10 +48,9 @@ object NetworkModule {
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .build()
 
-    // For other api calls to back end that need authorization header
     val client = OkHttpClient.Builder()
         .addInterceptor(AuthInterceptor(userApi))
-        .addInterceptor(HttpLoggingInterceptor().setLevel(Level.HEADERS))
+        .addInterceptor(HttpLoggingInterceptor().setLevel(Level.BODY))
         .build()
 
     val api: Retrofit = Retrofit.Builder()

@@ -30,9 +30,10 @@ import com.groupe1.app_android.ui.components.TopNavBar
 import com.groupe1.app_android.ui.main.InboxScreen
 import com.groupe1.app_android.ui.main.MapScreen
 import com.groupe1.app_android.ui.main.TripsScreen
-import com.groupe1.app_android.ui.screens.WishlistScreen
-import com.groupe1.app_android.ui.main.components.RequireUser
+import com.groupe1.app_android.ui.main.WishlistScreen
+import com.groupe1.app_android.ui.components.RequireUser
 import com.groupe1.app_android.ui.profile.ProfileRoute
+import com.groupe1.app_android.ui.screens.CreateProposalScreen
 import com.groupe1.app_android.ui.screens.HomeScreen
 import com.groupe1.app_android.ui.screens.LoginRegisterGateScreen
 import com.groupe1.app_android.ui.screens.LoginScreen
@@ -64,7 +65,7 @@ object Routes {
     const val WISHLIST = "wishlist"
     const val TRIPS = "trips"
     const val INBOX = "inbox"
-
+    const val CREATE_PROPOSAL = "createProposal"
     const val FILTER_WHEN = "filter_when"
     const val FILTER_TRAVELLERS = "filter_travellers"
     const val FILTER_RESULTS = "filter_results"
@@ -137,7 +138,7 @@ fun AppNav(
             composable(Routes.REGISTER) {
                 RegisterScreen(
                     onClickGoToHome = { nav.navigate(Routes.HOME) },
-                    onClickGoToGate = { nav.navigate(Routes.GATE) }
+                    onClickGoToGate = { nav.navigate(Routes.GATE) },
                 )
             }
 
@@ -150,7 +151,9 @@ fun AppNav(
                         onTriggerFilterAd = { nav.navigate(Routes.FILTER_LISTING) },
                         onItemClick = { listingId ->
                             nav.navigate("listing/$listingId")
-                        })
+                        },
+                        onClickGoToCreateProposal = { nav.navigate(Routes.CREATE_PROPOSAL)}
+                    )
                 }
             }
             composable(Routes.MAP) {
@@ -218,6 +221,14 @@ fun AppNav(
                     onBack = { nav.popBackStack() },
                     onQuit = { nav.navigate(Routes.HOME) }
                 )
+            }
+            composable(Routes.CREATE_PROPOSAL) {
+                RequireUser(nav) { user ->
+                    CreateProposalScreen(
+                        currentUser = user,
+                        onBackClick = { nav.popBackStack() }
+                    )
+                }
             }
 
             composable(Routes.FILTER_TRAVELLERS) {
