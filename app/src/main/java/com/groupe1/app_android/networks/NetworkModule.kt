@@ -36,6 +36,7 @@ object NetworkModule {
                 val logger = HttpLoggingInterceptor()
                 logger.level = HttpLoggingInterceptor.Level.BODY
                 addInterceptor(logger)
+                addInterceptor(AccessTokenInterceptor())
             }
         }.build()
     }
@@ -49,6 +50,7 @@ object NetworkModule {
     }
 
     val userApi: UserApi by lazy { retrofit.create(UserApi::class.java) }
+    val
 
     val searchBarCityApi = Retrofit.Builder()
         .baseUrl("https://api.mapbox.com/")

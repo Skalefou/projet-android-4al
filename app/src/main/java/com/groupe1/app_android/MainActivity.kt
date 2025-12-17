@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Surface
 import androidx.navigation.compose.rememberNavController
 import com.groupe1.app_android.data.repository.ListingRepositoryImpl
+import com.groupe1.app_android.domain.usecase.listings.CreateProposalUseCase
 import com.groupe1.app_android.domain.usecase.listings.GetAllListingUseCase
 import com.groupe1.app_android.domain.usecase.listings.ListingUseCases
 import com.groupe1.app_android.ui.navigation.AppNav
@@ -14,10 +15,10 @@ import com.groupe1.app_android.ui.theme.ProjetandroidTheme
 import com.groupe1.app_android.viewModels.ListingsViewModel
 
 class MainActivity : ComponentActivity() {
-    // Listings
     private val listingRepository = ListingRepositoryImpl()
     private val listingUseCases = ListingUseCases(
-        GetAllListingUseCase(listingRepository)
+        GetAllListingUseCase(listingRepository),
+        CreateProposalUseCase(listingRepository)
     )
     private val listingsViewModel = ListingsViewModel(listingUseCases)
 

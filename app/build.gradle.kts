@@ -47,6 +47,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.compose.foundation)
     val nav_version = "2.9.5"
     implementation(libs.converter.gson)
     implementation(libs.coil.compose)
