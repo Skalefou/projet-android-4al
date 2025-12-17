@@ -1,5 +1,6 @@
 package com.groupe1.app_android.ui.navigation
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -9,13 +10,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -30,7 +30,7 @@ import com.groupe1.app_android.ui.components.TopNavBar
 import com.groupe1.app_android.ui.main.InboxScreen
 import com.groupe1.app_android.ui.main.MapScreen
 import com.groupe1.app_android.ui.main.TripsScreen
-import com.groupe1.app_android.ui.main.WishlistScreen
+import com.groupe1.app_android.ui.screens.WishlistScreen
 import com.groupe1.app_android.ui.main.components.RequireUser
 import com.groupe1.app_android.ui.profile.ProfileRoute
 import com.groupe1.app_android.ui.screens.HomeScreen
@@ -44,6 +44,7 @@ import com.groupe1.app_android.ui.screens.filterListing.FilterResultsScreen
 import com.groupe1.app_android.ui.screens.filterListing.FilterWhenScreen
 import com.groupe1.app_android.ui.screens.filterListing.FilterWhereScreen
 import com.groupe1.app_android.ui.settings.SettingsScreen
+import com.groupe1.app_android.viewModels.FavoritesViewModel
 import com.groupe1.app_android.viewModels.FiltersViewModel
 import com.groupe1.app_android.viewModels.ListingViewModel
 import com.groupe1.app_android.viewModels.ListingsViewModel
@@ -70,8 +71,15 @@ object Routes {
     const val FILTER_TYPE = "filter_type"
 }
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Composable
-fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel, filtersViewModel: FiltersViewModel, listingUseCases: ListingUseCases) {
+fun AppNav(
+    nav: NavHostController,
+    listingsViewModel: ListingsViewModel,
+    filtersViewModel: FiltersViewModel,
+    favoritesViewModel: FavoritesViewModel,
+    listingUseCases: ListingUseCases
+) {
     val context = LocalContext.current
 
     val prefsState by context.userPreferencesDataStore
@@ -149,7 +157,15 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel, filters
                 MapScreen()
             }
             composable(Routes.WISHLIST) {
-                WishlistScreen()
+                RequireUser(nav) { user ->
+                    WishlistScreen(
+                        favoritesViewModel = favoritesViewModel,
+                        currentUser = user,
+                        onItemClick = { listingId ->
+                            nav.navigate("listing/$listingId")
+                        }
+                    )
+                }
             }
             composable(Routes.TRIPS) {
                 TripsScreen()
@@ -177,7 +193,10 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel, filters
                 ListingScreen(
                     modifier = Modifier.background(Color.White),
                     listingId = listingId,
-                    listingViewModel = ListingViewModel(listingId, listingUseCases),
+                    listingViewModel = ListingViewModel(
+                        listingId = listingId,
+                        useCases = listingUseCases
+                    ),
                     onBackClick = { nav.popBackStack() }
                 )
             }
@@ -202,7 +221,7 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel, filters
             }
 
             composable(Routes.FILTER_TRAVELLERS) {
-                FilterNumberOfTravellersScreen (
+                FilterNumberOfTravellersScreen(
                     viewModel = filtersViewModel,
                     onNext = { nav.navigate(Routes.FILTER_TYPE) },
                     onBack = { nav.popBackStack() },
@@ -224,10 +243,12 @@ fun AppNav(nav: NavHostController, listingsViewModel: ListingsViewModel, filters
                     viewModel = filtersViewModel,
                     onListingClick = { listing -> nav.navigate("listing/${listing.id}") },
                     onBack = { nav.popBackStack() },
-                    onEditFilter = { nav.navigate(Routes.FILTER_LISTING) {
-                        popUpTo(Routes.FILTER_LISTING) { inclusive = false }
-                        launchSingleTop = true
-                    } }
+                    onEditFilter = {
+                        nav.navigate(Routes.FILTER_LISTING) {
+                            popUpTo(Routes.FILTER_LISTING) { inclusive = false }
+                            launchSingleTop = true
+                        }
+                    }
                 )
             }
 

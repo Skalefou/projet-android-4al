@@ -17,6 +17,6 @@ interface FavoriteApiService {
     @DELETE("/api/listings/{id}/favorites")
     suspend fun unlikeListing(@Path("id") id: Long): Unit
 
-    @GET("/api/listings/{id}/favorites")
+    @GET("/api/listings/{id}/favorite")
     suspend fun isFavorite(@Path("id") id: Long): IsFavoriteDTO
 }

@@ -21,6 +21,7 @@ import com.groupe1.app_android.domain.usecase.listings.favorites.LikeListingUseC
 import com.groupe1.app_android.domain.usecase.listings.favorites.UnlikeListingUseCase
 import com.groupe1.app_android.ui.navigation.AppNav
 import com.groupe1.app_android.ui.theme.ProjetandroidTheme
+import com.groupe1.app_android.viewModels.FavoritesViewModel
 import com.groupe1.app_android.viewModels.FiltersViewModel
 import com.groupe1.app_android.viewModels.ListingsViewModel
 import kotlinx.coroutines.flow.first
@@ -48,6 +49,8 @@ class MainActivity : ComponentActivity() {
 
     private val filtersViewModel = FiltersViewModel(listingUseCases)
 
+    private val favoritesViewModel = FavoritesViewModel(listingUseCases)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +67,7 @@ class MainActivity : ComponentActivity() {
                         nav,
                         listingsViewModel = listingsViewModel,
                         filtersViewModel = filtersViewModel,
+                        favoritesViewModel = favoritesViewModel,
                         listingUseCases = listingUseCases
                     )
                 }

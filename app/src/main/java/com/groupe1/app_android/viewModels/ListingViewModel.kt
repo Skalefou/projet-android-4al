@@ -1,5 +1,6 @@
 package com.groupe1.app_android.viewModels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.groupe1.app_android.domain.models.Listing
@@ -24,6 +25,7 @@ class ListingViewModel(
     init {
         getListingById()
         isFavorite()
+        Log.d("ListingViewModel", "isFavorite : ${_remoteIsFavorite.value}")
     }
 
     fun getListingById() {
@@ -39,6 +41,7 @@ class ListingViewModel(
     fun likeListing() {
         viewModelScope.launch {
             try {
+                Log.d("ListingViewModel", "likeListing : ${_remoteIsFavorite.value}")
                 if(_remoteIsFavorite.value) {
                     useCases.unlikeListing(listingId)
                     _remoteIsFavorite.value = false
