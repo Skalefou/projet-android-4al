@@ -30,7 +30,6 @@ import com.groupe1.app_android.ui.components.TopNavBar
 import com.groupe1.app_android.ui.main.InboxScreen
 import com.groupe1.app_android.ui.main.MapScreen
 import com.groupe1.app_android.ui.main.TripsScreen
-import com.groupe1.app_android.ui.main.WishlistScreen
 import com.groupe1.app_android.ui.components.RequireUser
 import com.groupe1.app_android.ui.profile.ProfileRoute
 import com.groupe1.app_android.ui.screens.CreateProposalScreen
@@ -39,6 +38,7 @@ import com.groupe1.app_android.ui.screens.LoginRegisterGateScreen
 import com.groupe1.app_android.ui.screens.LoginScreen
 import com.groupe1.app_android.ui.screens.RegisterScreen
 import com.groupe1.app_android.ui.screens.ListingScreen
+import com.groupe1.app_android.ui.screens.WishlistScreen
 import com.groupe1.app_android.ui.screens.filterListing.FilterHousePropertyScreen
 import com.groupe1.app_android.ui.screens.filterListing.FilterNumberOfTravellersScreen
 import com.groupe1.app_android.ui.screens.filterListing.FilterResultsScreen
